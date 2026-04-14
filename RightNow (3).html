@@ -1,0 +1,2117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>RightNow — India Legal Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F5F4ED;
+  --dark: #0E0E0E;
+  --accent: #BBE72D;
+  --accent2: #C6E83A;
+  --muted: #88877D;
+  --white: #FFFFFF;
+  --card-bg: #FFFFFF;
+  --red: #E84040;
+  --blue: #2D5BBE;
+  --radius: 20px;
+  --shadow: 0 2px 16px rgba(0,0,0,0.07);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { font-size: 16px; }
+body {
+  background: var(--bg);
+  font-family: 'DM Sans', sans-serif;
+  color: var(--dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* LAYOUT */
+.app-shell {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+  background: var(--bg);
+}
+@media (min-width: 768px) {
+  body { background: #E8E7DF; }
+  .app-shell {
+    max-width: 100%;
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+  }
+  .bottom-nav { display: none !important; }
+  .sidebar { display: flex !important; }
+  .page { padding-bottom: 0 !important; }
+  .main-content-area { grid-column: 2; grid-row: 1 / 3; overflow-y: auto; height: 100vh; }
+  .sidebar-header { grid-column: 1; grid-row: 1; }
+}
+
+/* SIDEBAR (desktop) */
+.sidebar {
+  display: none;
+  flex-direction: column;
+  background: var(--dark);
+  grid-row: 1 / 3;
+  padding: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.sidebar-brand {
+  padding: 28px 24px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.sidebar-brand .brand-name { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; color: var(--white); }
+.sidebar-brand .brand-name span { color: var(--accent); }
+.sidebar-brand .brand-sub { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 4px; letter-spacing: 0.08em; text-transform: uppercase; }
+.sidebar-user {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.sidebar-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; color: var(--dark); flex-shrink: 0; }
+.sidebar-user-info .uname { font-weight: 600; font-size: 14px; color: var(--white); }
+.sidebar-user-info .urole { font-size: 11px; color: rgba(255,255,255,0.4); }
+.sidebar-nav { padding: 16px 12px; flex: 1; }
+.snav-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px; border-radius: 14px;
+  cursor: pointer; transition: all 0.18s; margin-bottom: 4px;
+  color: rgba(255,255,255,0.55); font-size: 14px; font-weight: 500;
+}
+.snav-item:hover { background: rgba(255,255,255,0.07); color: var(--white); }
+.snav-item.active { background: var(--accent); color: var(--dark); }
+.snav-item .sicon { width: 20px; text-align: center; font-size: 16px; }
+.sidebar-panic {
+  margin: 12px;
+  background: var(--red);
+  color: white;
+  border-radius: 16px;
+  padding: 14px 18px;
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer; font-weight: 700; font-size: 14px;
+  transition: opacity 0.15s;
+}
+.sidebar-panic:hover { opacity: 0.9; }
+
+/* PAGES */
+.page { display: none; flex-direction: column; min-height: 100vh; padding-bottom: 80px; }
+.page.active { display: flex; }
+
+/* BOTTOM NAV */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 480px;
+  background: var(--dark);
+  display: flex; align-items: center; justify-content: space-around;
+  padding: 10px 8px 20px;
+  border-radius: 28px 28px 0 0;
+  z-index: 100;
+}
+.bnav-item {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 4px 12px; cursor: pointer; flex: 1;
+  color: rgba(255,255,255,0.4); transition: color 0.15s;
+}
+.bnav-item.active { color: var(--white); }
+.bnav-item svg { width: 22px; height: 22px; }
+.bnav-label { font-size: 10px; font-weight: 500; }
+.bnav-center {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--dark); border: 3px solid var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; flex-shrink: 0;
+  box-shadow: 0 0 0 3px var(--accent);
+  transition: transform 0.15s;
+}
+.bnav-center:active { transform: scale(0.93); }
+.bnav-center svg { width: 26px; height: 26px; color: var(--accent); }
+
+/* HEADER */
+.page-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 20px 12px;
+}
+.header-left { display: flex; align-items: center; gap: 12px; }
+.avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; color: var(--dark); cursor: pointer; }
+.header-greeting { font-size: 13px; color: var(--muted); }
+.header-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; color: var(--dark); }
+.header-actions { display: flex; gap: 10px; }
+.icon-btn {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--white); border: none;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; box-shadow: var(--shadow);
+}
+
+/* HERO CARD */
+.hero-card {
+  margin: 0 20px 20px;
+  background: var(--dark);
+  border-radius: var(--radius);
+  padding: 24px;
+  position: relative; overflow: hidden;
+}
+.hero-card::after {
+  content: ''; position: absolute;
+  right: -20px; top: -20px;
+  width: 140px; height: 140px;
+  background: rgba(187,231,45,0.15);
+  border-radius: 50%;
+}
+.hero-label { font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; }
+.hero-h1 { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; color: var(--white); line-height: 1.2; }
+.hero-h1 span { color: var(--accent); display: block; }
+.hero-chips { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+.hero-chip { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); font-size: 12px; padding: 6px 12px; border-radius: 20px; display: flex; align-items: center; gap: 5px; }
+.hero-chip::before { content: '•'; color: var(--accent); }
+.panic-btn {
+  margin-top: 16px; width: 100%;
+  background: var(--accent); color: var(--dark);
+  border: none; border-radius: 14px; padding: 14px 20px;
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; transition: opacity 0.15s;
+}
+.panic-btn:active { opacity: 0.88; }
+.panic-icon-circle { width: 36px; height: 36px; background: var(--dark); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+/* CATEGORY TABS */
+.cat-tabs { display: flex; gap: 8px; padding: 0 20px 16px; overflow-x: auto; scrollbar-width: none; }
+.cat-tabs::-webkit-scrollbar { display: none; }
+.cat-tab {
+  padding: 9px 18px; border-radius: 22px; font-size: 13px; font-weight: 600;
+  background: var(--white); color: var(--muted); cursor: pointer;
+  border: none; white-space: nowrap; transition: all 0.15s;
+  box-shadow: var(--shadow);
+}
+.cat-tab.active { background: var(--dark); color: var(--accent); }
+
+/* SECTION LABEL */
+.section-row { display: flex; align-items: center; justify-content: space-between; padding: 0 20px 12px; }
+.section-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; }
+.section-count { font-size: 12px; color: var(--muted); }
+
+/* FEATURED CARD */
+.featured-card {
+  margin: 0 20px 12px;
+  background: var(--dark);
+  border-radius: var(--radius);
+  padding: 18px;
+  display: flex; align-items: center; gap: 16px;
+  cursor: pointer; transition: transform 0.15s;
+}
+.featured-card:active { transform: scale(0.98); }
+.featured-emoji-wrap { width: 64px; height: 64px; background: rgba(255,255,255,0.1); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0; }
+.featured-info { flex: 1; }
+.featured-name { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; color: var(--white); }
+.featured-desc { font-size: 13px; color: rgba(255,255,255,0.55); margin-top: 2px; }
+.featured-tag { display: inline-block; margin-top: 8px; background: rgba(187,231,45,0.2); color: var(--accent); font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+.featured-arrow { width: 36px; height: 36px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+/* GRID CARDS */
+.scenarios-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 20px 20px; }
+.grid-card {
+  background: var(--white); border-radius: 18px;
+  padding: 16px; cursor: pointer;
+  transition: transform 0.15s; box-shadow: var(--shadow);
+}
+.grid-card:active { transform: scale(0.97); }
+.grid-emoji { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 10px; }
+.grid-name { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 800; line-height: 1.2; }
+.grid-desc { font-size: 11px; color: var(--muted); margin-top: 4px; }
+.grid-tag { display: inline-block; margin-top: 8px; background: #F0F7D8; color: #5A7A10; font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+
+/* DETAIL PAGE */
+.detail-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 20px 10px;
+}
+.back-btn { width: 40px; height: 40px; background: var(--white); border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow); }
+.detail-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 800; }
+.panic-mini { width: 40px; height: 40px; background: var(--white); border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow); }
+.detail-hero { margin: 0 20px 16px; background: var(--white); border-radius: var(--radius); padding: 20px; display: flex; gap: 16px; align-items: flex-start; box-shadow: var(--shadow); }
+.detail-emoji-wrap { width: 68px; height: 68px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 36px; flex-shrink: 0; }
+.detail-scenario-name { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; line-height: 1.2; color: var(--blue); }
+.detail-tag { display: inline-block; margin-top: 8px; background: #E8F0FE; color: var(--blue); font-size: 12px; font-weight: 700; padding: 5px 12px; border-radius: 20px; }
+
+/* TABS */
+.dtabs { display: flex; gap: 8px; padding: 0 20px 16px; overflow-x: auto; scrollbar-width: none; }
+.dtabs::-webkit-scrollbar { display: none; }
+.dtab {
+  padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600;
+  background: var(--white); color: var(--muted); cursor: pointer; border: none;
+  white-space: nowrap; transition: all 0.15s; box-shadow: var(--shadow);
+}
+.dtab.active { background: var(--dark); color: var(--accent); }
+
+/* TAB CONTENT */
+.tab-content { padding: 0 20px; }
+.block-label { font-size: 10px; font-weight: 700; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; }
+.right-item {
+  background: var(--white); border-radius: 16px; padding: 16px;
+  display: flex; gap: 14px; margin-bottom: 10px; box-shadow: var(--shadow);
+}
+.right-num { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 800; color: var(--accent2); flex-shrink: 0; padding-top: 2px; }
+.right-text { font-size: 14px; line-height: 1.55; color: var(--dark); }
+
+/* LEGAL BASIS */
+.law-toggle-btn {
+  width: 100%; background: var(--dark); color: var(--accent);
+  border: none; border-radius: 14px; padding: 14px 18px;
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px;
+  cursor: pointer; text-align: left; display: flex; align-items: center; gap: 10px;
+  margin-bottom: 12px; transition: opacity 0.15s;
+}
+.law-toggle-btn:active { opacity: 0.85; }
+.law-detail-card {
+  background: var(--white); border-radius: 16px; padding: 18px;
+  margin-bottom: 12px; box-shadow: var(--shadow); display: none;
+}
+.law-detail-name { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 800; color: var(--dark); margin-bottom: 6px; }
+.law-detail-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.law-pill-tag { background: #F0F7D8; color: #5A7A10; font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 10px; }
+.law-detail-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.law-detail-use { margin-top: 8px; }
+.law-detail-use-title { font-size: 11px; font-weight: 700; color: var(--dark); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+.law-detail-use-text { font-size: 13px; color: var(--dark); line-height: 1.5; }
+
+/* SAY THIS */
+.say-card {
+  background: var(--dark); border-radius: 16px; padding: 18px;
+  margin-bottom: 10px; position: relative;
+}
+.say-label { font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+.say-text { font-size: 14px; color: var(--white); line-height: 1.6; }
+.copy-btn {
+  position: absolute; top: 14px; right: 14px;
+  background: var(--accent); border: none; border-radius: 10px;
+  padding: 6px 12px; font-size: 11px; font-weight: 700; cursor: pointer;
+  display: flex; align-items: center; gap: 4px; color: var(--dark);
+  transition: opacity 0.15s;
+}
+.copy-btn:active { opacity: 0.8; }
+.copied-toast {
+  position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
+  background: var(--dark); color: var(--accent);
+  padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: 600;
+  z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  white-space: nowrap;
+}
+.copied-toast.show { opacity: 1; }
+
+/* EVIDENCE */
+.evidence-item {
+  background: var(--white); border-radius: 14px; padding: 14px 16px;
+  margin-bottom: 8px; display: flex; align-items: flex-start; gap: 10px;
+  box-shadow: var(--shadow);
+}
+.ev-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+.ev-text { font-size: 13px; line-height: 1.5; }
+
+/* CONTACTS */
+.contact-card {
+  background: var(--white); border-radius: 14px; padding: 14px 16px;
+  margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;
+  box-shadow: var(--shadow);
+}
+.contact-num { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; }
+.contact-info .cname { font-size: 14px; font-weight: 600; }
+.contact-info .cdesc { font-size: 12px; color: var(--muted); }
+.call-btn { width: 40px; height: 40px; background: var(--accent); border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+
+/* PANIC MODE */
+.panic-overlay {
+  position: fixed; inset: 0; background: var(--red);
+  z-index: 1000; display: none; flex-direction: column;
+  overflow-y: auto;
+}
+.panic-overlay.active { display: flex; }
+.panic-top { padding: 28px 20px 16px; display: flex; align-items: center; justify-content: space-between; }
+.panic-heading { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; color: var(--white); display: flex; align-items: center; gap: 10px; }
+.panic-close { width: 44px; height: 44px; background: rgba(255,255,255,0.2); border-radius: 50%; border: none; cursor: pointer; font-size: 20px; color: white; display: flex; align-items: center; justify-content: center; }
+.panic-section-label { font-size: 10px; color: rgba(255,255,255,0.55); letter-spacing: 0.12em; text-transform: uppercase; padding: 0 20px 10px; }
+.panic-num-card {
+  margin: 0 20px 10px; background: rgba(255,255,255,0.15);
+  border-radius: 18px; padding: 18px 20px;
+  display: flex; align-items: center; gap: 16px; cursor: pointer;
+}
+.panic-num { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800; color: var(--white); }
+.panic-num-info .pname { font-size: 15px; color: var(--white); font-weight: 600; }
+.panic-num-info .pdesc { font-size: 12px; color: rgba(255,255,255,0.6); }
+.panic-right-card {
+  margin: 0 20px 10px; background: rgba(255,255,255,0.12);
+  border-radius: 18px; padding: 16px;
+}
+.panic-right-title { font-size: 10px; color: rgba(255,255,255,0.5); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+.panic-right-text { font-size: 15px; color: var(--white); line-height: 1.5; font-weight: 500; }
+.panic-sos-btn {
+  margin: 16px 20px; background: var(--white); color: var(--red);
+  border: none; border-radius: 16px; padding: 18px;
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.02)} }
+
+/* SEARCH PAGE */
+.search-header { padding: 20px 20px 12px; }
+.search-back { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.search-input-wrap { position: relative; }
+.search-input {
+  width: 100%; background: var(--white); border: 2px solid transparent;
+  border-radius: 16px; padding: 14px 16px 14px 44px;
+  font-size: 15px; font-family: 'DM Sans', sans-serif; outline: none;
+  box-shadow: var(--shadow); transition: border 0.15s;
+}
+.search-input:focus { border-color: var(--accent); }
+.search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); }
+.search-results { padding: 0 20px; }
+.search-result-item {
+  background: var(--white); border-radius: 14px; padding: 14px 16px;
+  margin-bottom: 8px; cursor: pointer; box-shadow: var(--shadow);
+  transition: transform 0.12s;
+}
+.search-result-item:active { transform: scale(0.98); }
+.sr-cat { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+.sr-text { font-size: 14px; }
+.sr-text mark { background: var(--accent); border-radius: 3px; padding: 0 2px; }
+.search-empty { text-align: center; padding: 60px 20px; color: var(--muted); font-size: 15px; }
+
+/* ABOUT PAGE */
+.about-section { padding: 0 20px 16px; }
+.about-hero { margin: 0 20px 20px; background: var(--dark); border-radius: var(--radius); padding: 24px; position: relative; overflow: hidden; }
+.about-hero::after { content:''; position:absolute; right:-20px;top:-20px;width:120px;height:120px;background:rgba(187,231,45,0.12);border-radius:50%; }
+.about-brand { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800; color: var(--white); }
+.about-brand span { color: var(--accent); }
+.about-sub { font-size: 13px; color: rgba(255,255,255,0.55); margin-top: 8px; line-height: 1.6; }
+.feature-card { background: var(--white); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); }
+.feature-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 16px; }
+.feature-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+.feature-icon-wrap { width: 44px; height: 44px; background: #F0F7D8; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.feature-item-info .ftitle { font-size: 14px; font-weight: 700; }
+.feature-item-info .fdesc { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.5; }
+.helpline-card { background: var(--white); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); }
+.helpline-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 16px; }
+
+/* PROFILE PAGE */
+.profile-page-header { padding: 20px 20px 12px; }
+.profile-card-big {
+  margin: 0 20px 16px; background: var(--dark);
+  border-radius: var(--radius); padding: 24px;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  position: relative; overflow: hidden;
+}
+.profile-card-big::after { content:''; position:absolute; right:-30px;top:-30px;width:160px;height:160px;background:rgba(187,231,45,0.1);border-radius:50%; }
+.profile-avatar-big { width: 80px; height: 80px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 36px; color: var(--dark); margin-bottom: 12px; z-index: 1; }
+.profile-name-big { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--white); z-index: 1; }
+.profile-sub { font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 4px; z-index: 1; }
+.profile-edit-btn { margin-top: 14px; background: var(--accent); color: var(--dark); border: none; border-radius: 10px; padding: 8px 20px; font-weight: 700; font-size: 13px; cursor: pointer; z-index: 1; }
+.profile-section { margin: 0 20px 16px; background: var(--white); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.profile-section-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 800; margin-bottom: 14px; }
+.profile-field { margin-bottom: 14px; }
+.profile-field label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 4px; }
+.profile-field input, .profile-field select {
+  width: 100%; background: var(--bg); border: 1.5px solid transparent;
+  border-radius: 12px; padding: 11px 14px; font-size: 14px;
+  font-family: 'DM Sans', sans-serif; outline: none; transition: border 0.15s;
+  color: var(--dark);
+}
+.profile-field input:focus, .profile-field select:focus { border-color: var(--accent); }
+.profile-save-btn { width: 100%; background: var(--dark); color: var(--accent); border: none; border-radius: 14px; padding: 15px; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 15px; cursor: pointer; transition: opacity 0.15s; }
+.profile-save-btn:active { opacity: 0.85; }
+.emergency-contact-card { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--bg); }
+.ec-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; color: var(--dark); }
+.ec-info { flex: 1; }
+.ec-name { font-size: 14px; font-weight: 600; }
+.ec-rel { font-size: 12px; color: var(--muted); }
+.ec-num { font-size: 13px; font-weight: 600; color: var(--blue); }
+.add-contact-btn { width: 100%; border: 2px dashed rgba(0,0,0,0.1); background: none; border-radius: 14px; padding: 14px; font-size: 14px; color: var(--muted); cursor: pointer; margin-top: 8px; font-family: 'DM Sans', sans-serif; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.saved-badge { background: #E8F0FE; color: var(--blue); font-size: 12px; font-weight: 700; border-radius: 20px; padding: 4px 12px; display: inline-block; }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.stat-item { background: var(--bg); border-radius: 14px; padding: 14px 10px; text-align: center; }
+.stat-num { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--dark); }
+.stat-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+/* MODAL */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 500; display: none; align-items: flex-end; }
+.modal-overlay.active { display: flex; }
+.modal-sheet { background: var(--white); border-radius: 24px 24px 0 0; padding: 24px 20px 40px; width: 100%; max-height: 80vh; overflow-y: auto; }
+.modal-handle { width: 40px; height: 4px; background: var(--bg); border-radius: 2px; margin: 0 auto 20px; }
+.modal-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; margin-bottom: 16px; }
+.modal-input { width: 100%; background: var(--bg); border: 1.5px solid transparent; border-radius: 12px; padding: 12px 14px; font-size: 14px; font-family: 'DM Sans', sans-serif; outline: none; margin-bottom: 12px; }
+.modal-input:focus { border-color: var(--accent); }
+.modal-btn { width: 100%; background: var(--dark); color: var(--accent); border: none; border-radius: 14px; padding: 15px; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 15px; cursor: pointer; }
+
+/* AI CHAT */
+.ai-chat-page { padding: 0; }
+.ai-chat-header { background: var(--dark); padding: 20px 20px 16px; display: flex; align-items: center; gap: 14px; }
+.ai-back-btn { width: 38px; height: 38px; background: rgba(255,255,255,0.1); border-radius: 50%; border: none; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.ai-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; color: var(--white); }
+.ai-sub { font-size: 12px; color: var(--accent); }
+.ai-messages { flex: 1; padding: 16px 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; min-height: 300px; }
+.ai-msg { max-width: 85%; }
+.ai-msg.user { align-self: flex-end; }
+.ai-msg.bot { align-self: flex-start; }
+.ai-bubble {
+  padding: 12px 16px; border-radius: 18px; font-size: 14px; line-height: 1.55;
+}
+.ai-msg.user .ai-bubble { background: var(--dark); color: var(--white); border-bottom-right-radius: 4px; }
+.ai-msg.bot .ai-bubble { background: var(--white); color: var(--dark); border-bottom-left-radius: 4px; box-shadow: var(--shadow); }
+.ai-typing { display: flex; gap: 4px; align-items: center; padding: 12px 16px; }
+.ai-typing span { width: 8px; height: 8px; background: var(--muted); border-radius: 50%; animation: typing 1s infinite; }
+.ai-typing span:nth-child(2) { animation-delay: 0.2s; }
+.ai-typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typing { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+.ai-input-bar { display: flex; gap: 10px; padding: 12px 20px 24px; background: var(--bg); border-top: 1px solid rgba(0,0,0,0.06); }
+.ai-input { flex: 1; background: var(--white); border: 1.5px solid transparent; border-radius: 14px; padding: 12px 14px; font-size: 14px; font-family: 'DM Sans', sans-serif; outline: none; }
+.ai-input:focus { border-color: var(--accent); }
+.ai-send { background: var(--dark); color: var(--accent); border: none; border-radius: 14px; padding: 12px 16px; cursor: pointer; font-size: 18px; display: flex; align-items: center; }
+.ai-suggestions { display: flex; gap: 8px; padding: 0 20px 12px; overflow-x: auto; scrollbar-width: none; }
+.ai-suggestions::-webkit-scrollbar { display: none; }
+.ai-sug { background: var(--white); border: 1px solid rgba(0,0,0,0.08); border-radius: 20px; padding: 7px 14px; font-size: 12px; white-space: nowrap; cursor: pointer; box-shadow: var(--shadow); transition: background 0.15s; }
+.ai-sug:hover { background: var(--accent); }
+
+/* FIR Generator */
+.fir-form { padding: 0 20px; }
+.fir-step { background: var(--white); border-radius: var(--radius); padding: 20px; margin-bottom: 14px; box-shadow: var(--shadow); }
+.fir-step-num { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+.fir-step-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 800; margin-bottom: 14px; }
+.fir-field { margin-bottom: 12px; }
+.fir-field label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; display: block; margin-bottom: 5px; }
+.fir-field input, .fir-field textarea, .fir-field select {
+  width: 100%; background: var(--bg); border: 1.5px solid transparent;
+  border-radius: 12px; padding: 11px 14px; font-size: 14px;
+  font-family: 'DM Sans', sans-serif; outline: none; transition: border 0.15s;
+  resize: none; color: var(--dark);
+}
+.fir-field input:focus, .fir-field textarea:focus, .fir-field select:focus { border-color: var(--accent); }
+.fir-generate-btn { width: 100%; margin: 0 0 20px; background: var(--dark); color: var(--accent); border: none; border-radius: 16px; padding: 16px; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 16px; cursor: pointer; }
+.fir-output { background: var(--white); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow); display: none; }
+.fir-output.show { display: block; }
+.fir-output-text { font-size: 13px; line-height: 1.8; white-space: pre-wrap; }
+
+/* QUIZ */
+.quiz-card { margin: 0 20px 14px; background: var(--white); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
+.quiz-q-num { font-size: 11px; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
+.quiz-q { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; line-height: 1.4; margin-bottom: 16px; }
+.quiz-options { display: flex; flex-direction: column; gap: 10px; }
+.quiz-opt {
+  border: 2px solid rgba(0,0,0,0.08); border-radius: 14px; padding: 13px 16px;
+  cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.15s;
+  background: var(--bg);
+}
+.quiz-opt:hover { border-color: var(--accent); background: #F5F9E0; }
+.quiz-opt.correct { border-color: #4CAF50; background: #E8F5E9; color: #2E7D32; }
+.quiz-opt.wrong { border-color: var(--red); background: #FFEBEE; color: #C62828; }
+.quiz-next-btn { width: 100%; margin: 0 0 20px; background: var(--dark); color: var(--accent); border: none; border-radius: 14px; padding: 15px; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 15px; cursor: pointer; display: none; }
+.quiz-next-btn.show { display: block; }
+.quiz-score { margin: 0 20px; background: var(--dark); border-radius: var(--radius); padding: 24px; text-align: center; display: none; }
+.quiz-score.show { display: block; }
+.quiz-score-num { font-family: 'Syne', sans-serif; font-size: 48px; font-weight: 800; color: var(--accent); }
+.quiz-score-label { font-size: 16px; color: rgba(255,255,255,0.7); margin-top: 4px; }
+.quiz-restart { margin-top: 16px; background: var(--accent); color: var(--dark); border: none; border-radius: 12px; padding: 12px 24px; font-family: 'Syne', sans-serif; font-weight: 800; cursor: pointer; }
+
+/* SCENARIO SIM */
+.sim-card { margin: 0 20px 14px; background: var(--white); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.sim-step-badge { background: var(--accent); color: var(--dark); font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-bottom: 12px; }
+.sim-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+.sim-desc { font-size: 14px; color: var(--muted); line-height: 1.55; margin-bottom: 16px; }
+.sim-do { background: #E8F5E9; border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; }
+.sim-dont { background: #FFEBEE; border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; }
+.sim-do-label { font-size: 10px; font-weight: 800; color: #2E7D32; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+.sim-dont-label { font-size: 10px; font-weight: 800; color: #C62828; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+.sim-text { font-size: 13px; line-height: 1.5; }
+.sim-nav-btns { display: flex; gap: 10px; padding: 0 20px 20px; }
+.sim-btn { flex: 1; padding: 14px; border-radius: 14px; border: none; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; cursor: pointer; }
+.sim-btn.prev { background: var(--white); color: var(--dark); box-shadow: var(--shadow); }
+.sim-btn.next { background: var(--dark); color: var(--accent); }
+
+/* DID YOU KNOW */
+.dyk-card { margin: 0 20px 14px; background: var(--dark); border-radius: var(--radius); padding: 22px; position: relative; overflow: hidden; }
+.dyk-card::after { content:''; position:absolute; right:-20px;top:-20px;width:120px;height:120px;background:rgba(187,231,45,0.1);border-radius:50%; }
+.dyk-label { font-size: 10px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 8px; }
+.dyk-text { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--white); line-height: 1.4; z-index: 1; position: relative; }
+.dyk-tag { margin-top: 10px; display: inline-block; background: var(--accent); color: var(--dark); font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; z-index: 1; position: relative; }
+
+/* MULTI LANG */
+.lang-btn { padding: 8px 16px; border-radius: 20px; border: 2px solid rgba(0,0,0,0.1); font-size: 13px; font-weight: 600; cursor: pointer; background: var(--white); transition: all 0.15s; }
+.lang-btn.active { background: var(--dark); color: var(--accent); border-color: var(--dark); }
+.lang-row { display: flex; gap: 8px; padding: 0 20px 16px; }
+
+/* SCROLL SNAP for detail */
+.scenarios-list { padding: 0 20px; }
+
+/* ANIMATIONS */
+@keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.page.active { animation: slideUp 0.22s ease; }
+
+/* DESKTOP ADJUSTMENTS */
+@media (min-width: 768px) {
+  .hero-card { margin: 20px 24px 20px; }
+  .cat-tabs { padding: 0 24px 16px; }
+  .section-row { padding: 0 24px 12px; }
+  .scenarios-grid { padding: 0 24px 20px; gap: 14px; }
+  .featured-card { margin: 0 24px 12px; }
+  .tab-content { padding: 0 24px; }
+  .dtabs { padding: 0 24px 16px; }
+  .detail-hero { margin: 0 24px 16px; }
+  .about-section { padding: 0 24px 16px; }
+  .about-hero { margin: 0 24px 20px; }
+  .fir-form { padding: 0 24px; }
+  .quiz-card, .sim-card, .dyk-card { margin: 0 24px 14px; }
+  .sim-nav-btns { padding: 0 24px 20px; }
+  .profile-card-big { margin: 0 24px 16px; }
+  .profile-section { margin: 0 24px 16px; }
+  .search-results { padding: 0 24px; }
+  .lang-row { padding: 0 24px 16px; }
+  .panic-section-label { padding: 0 24px 10px; }
+  .panic-num-card { margin: 0 24px 10px; }
+  .panic-right-card { margin: 0 24px 10px; }
+  .panic-sos-btn { margin: 16px 24px; }
+  .page-header { padding: 20px 24px 12px; }
+  .search-header { padding: 20px 24px 12px; }
+  .ai-input-bar { padding: 12px 24px 24px; }
+  .ai-messages { padding: 16px 24px; }
+  .ai-suggestions { padding: 0 24px 12px; }
+}
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+<!-- SIDEBAR (desktop) -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-name">Right<span>Now</span></div>
+    <div class="brand-sub">India Legal Guide</div>
+  </div>
+  <div class="sidebar-user">
+    <div class="sidebar-avatar" id="sb-avatar">P</div>
+    <div class="sidebar-user-info">
+      <div class="uname" id="sb-name">Prashanth</div>
+      <div class="urole">Indian Citizen</div>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="snav-item active" onclick="showPage('home',this)" data-nav="home">
+      <span class="sicon">🏠</span> Home
+    </div>
+    <div class="snav-item" onclick="showPage('search-page',this)" data-nav="search-page">
+      <span class="sicon">🔍</span> Search
+    </div>
+    <div class="snav-item" onclick="showPage('ai-page',this)" data-nav="ai-page">
+      <span class="sicon">🤖</span> AI Legal Assistant
+    </div>
+    <div class="snav-item" onclick="showPage('fir-page',this)" data-nav="fir-page">
+      <span class="sicon">📄</span> FIR Generator
+    </div>
+    <div class="snav-item" onclick="showPage('learn-page',this)" data-nav="learn-page">
+      <span class="sicon">🎓</span> Learn & Quiz
+    </div>
+    <div class="snav-item" onclick="showPage('sim-page',this)" data-nav="sim-page">
+      <span class="sicon">🧠</span> Scenario Sim
+    </div>
+    <div class="snav-item" onclick="showPage('about',this)" data-nav="about">
+      <span class="sicon">ℹ️</span> About
+    </div>
+    <div class="snav-item" onclick="showPage('profile',this)" data-nav="profile">
+      <span class="sicon">👤</span> Profile
+    </div>
+  </nav>
+  <div class="sidebar-panic" onclick="openPanic()">
+    ⚡ Panic Mode
+  </div>
+</div>
+
+<!-- MAIN CONTENT AREA -->
+<div class="main-content-area">
+
+<!-- HOME PAGE -->
+<div class="page active" id="home">
+  <div class="page-header">
+    <div class="header-left">
+      <div class="avatar" id="main-avatar" onclick="showPage('profile')">P</div>
+      <div>
+        <div class="header-greeting" id="greeting-text">Hello, Prashanth 👋</div>
+        <div class="header-title">Know Your Rights</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" onclick="showPage('search-page')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </button>
+      <button class="icon-btn" onclick="showPage('about')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="hero-card">
+    <div class="hero-label">RightNow · India Legal Guide</div>
+    <div class="hero-h1">Your rights,<span>instantly available.</span></div>
+    <div class="hero-chips">
+      <span class="hero-chip">25 Scenarios</span>
+      <span class="hero-chip">Offline</span>
+      <span class="hero-chip">Indian Law</span>
+    </div>
+    <button class="panic-btn" onclick="openPanic()">
+      ⚡ Panic Mode — Emergency Help
+      <div class="panic-icon-circle">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#BBE72D" stroke-width="2.5"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+    </button>
+  </div>
+
+  <div class="cat-tabs" id="cat-tabs">
+    <button class="cat-tab active" onclick="filterCat('all',this)">All Rights</button>
+    <button class="cat-tab" onclick="filterCat('enforcement',this)">Enforcement</button>
+    <button class="cat-tab" onclick="filterCat('civil',this)">Civil</button>
+    <button class="cat-tab" onclick="filterCat('social',this)">Social</button>
+    <button class="cat-tab" onclick="filterCat('digital',this)">Digital</button>
+    <button class="cat-tab" onclick="filterCat('family',this)">Family</button>
+    <button class="cat-tab" onclick="filterCat('property',this)">Property</button>
+  </div>
+
+  <div class="section-row">
+    <div class="section-title">Choose Scenario</div>
+    <div class="section-count" id="scenario-count">25 total</div>
+  </div>
+
+  <div id="featured-area"></div>
+  <div class="scenarios-grid" id="scenarios-grid"></div>
+</div>
+
+<!-- SEARCH PAGE -->
+<div class="page" id="search-page">
+  <div class="search-header">
+    <div class="search-back">
+      <button class="back-btn" onclick="showPage('home')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <div class="header-title">Search</div>
+    </div>
+    <div class="search-input-wrap">
+      <span class="search-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </span>
+      <input class="search-input" id="search-input" placeholder="Search rights, laws, scenarios…" oninput="doSearch(this.value)" autofocus>
+    </div>
+  </div>
+  <div class="search-results" id="search-results">
+    <div class="search-empty">Type to search across all rights, laws & scenarios</div>
+  </div>
+</div>
+
+<!-- DETAIL PAGE -->
+<div class="page" id="detail-page">
+  <div class="detail-header">
+    <button class="back-btn" onclick="goBack()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
+    <div class="detail-title" id="detail-nav-title">Scenario</div>
+    <button class="panic-mini" onclick="openPanic()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E84040" stroke-width="2.5"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+    </button>
+  </div>
+  <div class="detail-hero" id="detail-hero"></div>
+  <div class="dtabs" id="detail-tabs"></div>
+  <div class="tab-content" id="detail-tab-content"></div>
+</div>
+
+<!-- AI PAGE -->
+<div class="page" id="ai-page" style="padding-bottom:0;">
+  <div class="ai-chat-header">
+    <button class="ai-back-btn" onclick="showPage('home')">←</button>
+    <div>
+      <div class="ai-title">🤖 AI Legal Assistant</div>
+      <div class="ai-sub">Powered by RightNow AI</div>
+    </div>
+  </div>
+  <div class="lang-row">
+    <button class="lang-btn active" onclick="setLang('en',this)">🇬🇧 English</button>
+    <button class="lang-btn" onclick="setLang('ta',this)">🇮🇳 Tamil</button>
+    <button class="lang-btn" onclick="setLang('hi',this)">🇮🇳 Hindi</button>
+  </div>
+  <div class="ai-suggestions" id="ai-suggestions">
+    <div class="ai-sug" onclick="askAI(this.textContent)">Can police search my phone?</div>
+    <div class="ai-sug" onclick="askAI(this.textContent)">Stopped at night by police</div>
+    <div class="ai-sug" onclick="askAI(this.textContent)">FIR not being registered</div>
+    <div class="ai-sug" onclick="askAI(this.textContent)">Workplace harassment steps</div>
+    <div class="ai-sug" onclick="askAI(this.textContent)">Rights during hospital admission</div>
+  </div>
+  <div class="ai-messages" id="ai-messages">
+    <div class="ai-msg bot"><div class="ai-bubble">👋 Hi! I'm your AI Legal Assistant. Ask me anything about your legal rights in India — I'll give you clear, actionable advice in simple language.</div></div>
+  </div>
+  <div class="ai-input-bar">
+    <input class="ai-input" id="ai-input" placeholder="Ask a legal question…" onkeydown="if(event.key==='Enter')sendAI()">
+    <button class="ai-send" onclick="sendAI()">➤</button>
+  </div>
+</div>
+
+<!-- FIR PAGE -->
+<div class="page" id="fir-page">
+  <div class="page-header">
+    <div class="header-left">
+      <button class="back-btn" onclick="showPage('home')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <div class="header-title">📄 FIR / Complaint Generator</div>
+    </div>
+  </div>
+  <div class="fir-form">
+    <div class="fir-step">
+      <div class="fir-step-num">Step 1</div>
+      <div class="fir-step-title">Your Information</div>
+      <div class="fir-field"><label>Full Name</label><input id="fir-name" placeholder="Your full name"></div>
+      <div class="fir-field"><label>Address</label><input id="fir-addr" placeholder="Your address"></div>
+      <div class="fir-field"><label>Phone</label><input id="fir-phone" placeholder="Your phone number"></div>
+    </div>
+    <div class="fir-step">
+      <div class="fir-step-num">Step 2</div>
+      <div class="fir-step-title">Incident Details</div>
+      <div class="fir-field"><label>Type of Complaint</label>
+        <select id="fir-type">
+          <option value="theft">Theft / Robbery</option>
+          <option value="assault">Assault / Battery</option>
+          <option value="harassment">Harassment</option>
+          <option value="cybercrime">Cybercrime / Fraud</option>
+          <option value="domestic">Domestic Violence</option>
+          <option value="workplace">Workplace Misconduct</option>
+          <option value="police">Police Misconduct</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="fir-field"><label>Date & Time of Incident</label><input id="fir-date" type="datetime-local"></div>
+      <div class="fir-field"><label>Place of Incident</label><input id="fir-place" placeholder="Location where it happened"></div>
+      <div class="fir-field"><label>Describe the Incident</label><textarea id="fir-desc" rows="4" placeholder="Describe in detail what happened…"></textarea></div>
+      <div class="fir-field"><label>Accused Name (if known)</label><input id="fir-accused" placeholder="Name of accused (optional)"></div>
+    </div>
+    <button class="fir-generate-btn" onclick="generateFIR()">⚡ Generate FIR Draft</button>
+    <div class="fir-output" id="fir-output">
+      <div class="section-row" style="padding:0 0 12px;">
+        <div class="section-title" style="font-size:16px;">Generated FIR Draft</div>
+        <button class="copy-btn" style="position:relative;top:auto;right:auto;" onclick="copyFIR()">📋 Copy</button>
+      </div>
+      <div class="fir-output-text" id="fir-output-text"></div>
+    </div>
+  </div>
+</div>
+
+<!-- LEARN / QUIZ PAGE -->
+<div class="page" id="learn-page">
+  <div class="page-header">
+    <div class="header-left">
+      <button class="back-btn" onclick="showPage('home')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <div class="header-title">🎓 Learn & Quiz</div>
+    </div>
+  </div>
+  <div id="dyk-section"></div>
+  <div class="section-row">
+    <div class="section-title">Legal Quiz</div>
+    <div class="section-count" id="quiz-score-inline">Test yourself</div>
+  </div>
+  <div id="quiz-container"></div>
+  <button class="quiz-next-btn" id="quiz-next" onclick="nextQuestion()">Next Question →</button>
+  <div class="quiz-score" id="quiz-final">
+    <div class="quiz-score-num" id="quiz-score-num">0/5</div>
+    <div class="quiz-score-label">Quiz Complete! 🎉</div>
+    <button class="quiz-restart" onclick="startQuiz()">Try Again</button>
+  </div>
+</div>
+
+<!-- SCENARIO SIM PAGE -->
+<div class="page" id="sim-page">
+  <div class="page-header">
+    <div class="header-left">
+      <button class="back-btn" onclick="showPage('home')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <div class="header-title">🧠 Scenario Simulation</div>
+    </div>
+  </div>
+  <div class="section-row"><div class="section-title">Police Stopped You at Night</div></div>
+  <div id="sim-container"></div>
+  <div class="sim-nav-btns">
+    <button class="sim-btn prev" id="sim-prev" onclick="simStep(-1)">← Prev</button>
+    <button class="sim-btn next" id="sim-next" onclick="simStep(1)">Next →</button>
+  </div>
+</div>
+
+<!-- ABOUT PAGE -->
+<div class="page" id="about">
+  <div class="page-header">
+    <div class="header-left">
+      <button class="back-btn" onclick="showPage('home')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <div class="header-title">About</div>
+    </div>
+  </div>
+  <div class="about-hero">
+    <div class="about-brand">Right<span>Now</span></div>
+    <div class="about-sub">Offline legal rights guide for Indian citizens. Know your rights instantly — police, hospital, workplace, and more.</div>
+  </div>
+  <div class="about-section">
+    <div class="feature-card">
+      <div class="feature-title">Features</div>
+      <div class="feature-item"><div class="feature-icon-wrap">⚡</div><div class="feature-item-info"><div class="ftitle">Panic Mode</div><div class="fdesc">Large-text emergency numbers and core rights instantly.</div></div></div>
+      <div class="feature-item"><div class="feature-icon-wrap">🔍</div><div class="feature-item-info"><div class="ftitle">Live Search</div><div class="fdesc">Search across all rights, laws, and scenarios.</div></div></div>
+      <div class="feature-item"><div class="feature-icon-wrap">📋</div><div class="feature-item-info"><div class="ftitle">Copy Scripts</div><div class="fdesc">Copy exact legal phrases to use immediately.</div></div></div>
+      <div class="feature-item"><div class="feature-icon-wrap">📵</div><div class="feature-item-info"><div class="ftitle">Fully Offline</div><div class="fdesc">Single HTML file. No internet needed.</div></div></div>
+      <div class="feature-item"><div class="feature-icon-wrap">🤖</div><div class="feature-item-info"><div class="ftitle">AI Legal Assistant</div><div class="fdesc">Get instant answers to your legal questions.</div></div></div>
+      <div class="feature-item"><div class="feature-icon-wrap">🌐</div><div class="feature-item-info"><div class="ftitle">Multi-language</div><div class="fdesc">English, Tamil & Hindi support.</div></div></div>
+    </div>
+    <div class="helpline-card">
+      <div class="helpline-title">Free Legal Helplines</div>
+      <div class="contact-card"><div class="contact-num">15100</div><div class="contact-info"><div class="cname">NALSA Free Legal Aid</div><div class="cdesc">Free lawyer for everyone</div></div><button class="call-btn" onclick="callNum('15100')">📞</button></div>
+      <div class="contact-card"><div class="contact-num">1930</div><div class="contact-info"><div class="cname">Cyber Crime Helpline</div><div class="cdesc">Report within 1 hour</div></div><button class="call-btn" onclick="callNum('1930')">📞</button></div>
+      <div class="contact-card"><div class="contact-num">1091</div><div class="contact-info"><div class="cname">Women Helpline</div><div class="cdesc">24/7 support</div></div><button class="call-btn" onclick="callNum('1091')">📞</button></div>
+      <div class="contact-card"><div class="contact-num">14567</div><div class="contact-info"><div class="cname">Senior Citizen Helpline</div><div class="cdesc">For elderly citizens</div></div><button class="call-btn" onclick="callNum('14567')">📞</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE PAGE -->
+<div class="page" id="profile">
+  <div class="page-header">
+    <div class="header-left">
+      <button class="back-btn" onclick="showPage('home')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <div class="header-title">Profile</div>
+    </div>
+  </div>
+  <div class="profile-card-big">
+    <div class="profile-avatar-big" id="profile-avatar-big">P</div>
+    <div class="profile-name-big" id="profile-name-display">Prashanth</div>
+    <div class="profile-sub" id="profile-city-display">Chennai, Tamil Nadu</div>
+    <button class="profile-edit-btn" onclick="saveProfile()">Save Changes</button>
+  </div>
+  <div class="profile-section">
+    <div class="profile-section-title">Personal Details</div>
+    <div class="profile-field"><label>Full Name</label><input id="p-name" value="Prashanth" oninput="updateProfilePreview()"></div>
+    <div class="profile-field"><label>Age</label><input id="p-age" type="number" value="22" placeholder="Your age"></div>
+    <div class="profile-field"><label>City</label><input id="p-city" value="Chennai" oninput="updateProfilePreview()"></div>
+    <div class="profile-field"><label>State</label>
+      <select id="p-state">
+        <option>Tamil Nadu</option><option>Maharashtra</option><option>Karnataka</option>
+        <option>Delhi</option><option>Uttar Pradesh</option><option>Kerala</option>
+        <option>West Bengal</option><option>Gujarat</option><option>Rajasthan</option><option>Telangana</option>
+      </select>
+    </div>
+    <div class="profile-field"><label>Phone</label><input id="p-phone" type="tel" placeholder="Your phone number"></div>
+    <div class="profile-field"><label>Occupation</label>
+      <select id="p-occ">
+        <option>Student</option><option>Employee</option><option>Self-employed</option>
+        <option>Lawyer</option><option>Doctor</option><option>Other</option>
+      </select>
+    </div>
+    <div class="profile-field"><label>Preferred Language</label>
+      <select id="p-lang">
+        <option value="en">English</option>
+        <option value="ta">Tamil</option>
+        <option value="hi">Hindi</option>
+      </select>
+    </div>
+    <button class="profile-save-btn" onclick="saveProfile()">Save Profile</button>
+  </div>
+  <div class="profile-section">
+    <div class="profile-section-title">Emergency Contacts</div>
+    <div id="ec-list"></div>
+    <button class="add-contact-btn" onclick="openAddContact()">+ Add Emergency Contact</button>
+  </div>
+  <div class="profile-section">
+    <div class="profile-section-title">My Activity</div>
+    <div class="stats-grid">
+      <div class="stat-item"><div class="stat-num" id="stat-viewed">0</div><div class="stat-label">Rights Viewed</div></div>
+      <div class="stat-item"><div class="stat-num" id="stat-copied">0</div><div class="stat-label">Copied</div></div>
+      <div class="stat-item"><div class="stat-num" id="stat-quiz">0</div><div class="stat-label">Quiz Score</div></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- main-content-area -->
+
+<!-- BOTTOM NAV (mobile) -->
+<nav class="bottom-nav">
+  <div class="bnav-item active" id="bnav-home" onclick="showPage('home')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span class="bnav-label">Home</span>
+  </div>
+  <div class="bnav-item" id="bnav-search" onclick="showPage('search-page')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <span class="bnav-label">Search</span>
+  </div>
+  <div class="bnav-center" onclick="openPanic()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="bnav-item" id="bnav-about" onclick="showPage('about')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+    <span class="bnav-label">About</span>
+  </div>
+  <div class="bnav-item" id="bnav-profile" onclick="showPage('profile')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span class="bnav-label">Profile</span>
+  </div>
+</nav>
+
+<!-- PANIC OVERLAY -->
+<div class="panic-overlay" id="panic-overlay">
+  <div class="panic-top">
+    <div class="panic-heading">⚡ Panic Mode</div>
+    <button class="panic-close" onclick="closePanic()">✕</button>
+  </div>
+  <button class="panic-sos-btn" onclick="callNum('112')">🆘 TAP TO CALL 112 — EMERGENCY</button>
+  <div class="panic-section-label">EMERGENCY NUMBERS — INDIA</div>
+  <div class="panic-num-card" onclick="callNum('100')"><div class="panic-num">100</div><div class="panic-num-info"><div class="pname">Police</div><div class="pdesc">Immediate threat</div></div></div>
+  <div class="panic-num-card" onclick="callNum('108')"><div class="panic-num">108</div><div class="panic-num-info"><div class="pname">Ambulance</div><div class="pdesc">Medical emergency</div></div></div>
+  <div class="panic-num-card" onclick="callNum('112')"><div class="panic-num">112</div><div class="panic-num-info"><div class="pname">Emergency (All)</div><div class="pdesc">Unified helpline</div></div></div>
+  <div class="panic-num-card" onclick="callNum('1091')"><div class="panic-num">1091</div><div class="panic-num-info"><div class="pname">Women Helpline</div><div class="pdesc">24/7 support</div></div></div>
+  <div class="panic-num-card" onclick="callNum('1930')"><div class="panic-num">1930</div><div class="panic-num-info"><div class="pname">Cyber Crime</div><div class="pdesc">Report within 1 hour</div></div></div>
+  <div class="panic-num-card" onclick="callNum('15100')"><div class="panic-num">15100</div><div class="panic-num-info"><div class="pname">Free Legal Aid</div><div class="pdesc">NALSA helpline</div></div></div>
+  <div class="panic-section-label" style="margin-top:10px;">FUNDAMENTAL RIGHTS — KNOW NOW</div>
+  <div class="panic-right-card"><div class="panic-right-title">ARREST</div><div class="panic-right-text">Must be told grounds immediately. No detention beyond 24 hrs without magistrate order (Article 22).</div></div>
+  <div class="panic-right-card"><div class="panic-right-title">SILENCE</div><div class="panic-right-text">Not required to answer any questions. Say: "I choose to remain silent without a lawyer."</div></div>
+  <div class="panic-right-card"><div class="panic-right-title">LAWYER</div><div class="panic-right-text">Right to call a lawyer immediately after arrest. Demand it — it cannot be refused.</div></div>
+  <div class="panic-right-card"><div class="panic-right-title">SEARCH</div><div class="panic-right-text">Police cannot search your phone or body without a warrant or reasonable grounds.</div></div>
+  <div style="height:24px;"></div>
+</div>
+
+<!-- ADD CONTACT MODAL -->
+<div class="modal-overlay" id="contact-modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Add Emergency Contact</div>
+    <input class="modal-input" id="ec-name-input" placeholder="Contact Name">
+    <input class="modal-input" id="ec-rel-input" placeholder="Relationship (e.g., Mother)">
+    <input class="modal-input" id="ec-num-input" type="tel" placeholder="Phone Number">
+    <button class="modal-btn" onclick="addContact()">Add Contact</button>
+  </div>
+</div>
+
+<!-- COPIED TOAST -->
+<div class="copied-toast" id="copied-toast">✓ Copied to clipboard</div>
+
+<script>
+// ============ DATA ============
+const SCENARIOS = [
+  {
+    id:1, name:"Police Interaction", emoji:"🚔", desc:"Stopped, questioned, searched",
+    tag:"CrPC·IPC", cat:"enforcement", bg:"#E8F0FF",
+    rights:[
+      "You have the right to know why you are being stopped or questioned.",
+      "Police cannot force you to answer questions — right to remain silent.",
+      "Police cannot search your person or vehicle without reasonable grounds or a warrant.",
+      "You are not required to unlock your phone or hand over personal devices.",
+      "Oral statements to police (Sec 162 CrPC) are not admissible as evidence.",
+      "If detained, you must be produced before a magistrate within 24 hours (Article 22).",
+      "You have the right to be informed in your own language.",
+      "You can ask for a female officer if you are a woman."
+    ],
+    laws:[
+      { name:"CrPC Section 41", articles:["CrPC §41"], what:"Conditions for arrest without warrant — police must have reasonable complaint or credible intelligence.", when:"When police try to arrest you without showing a warrant.", whom:"Any person being detained or arrested." },
+      { name:"Article 22 — Constitution", articles:["Art. 22"], what:"Fundamental right: No detention beyond 24 hours without magistrate's order. Right to consult a lawyer.", when:"Immediately on arrest or detention.", whom:"All Indian citizens and persons in India." },
+      { name:"CrPC Section 162", articles:["CrPC §162"], what:"Statements made to police are NOT admissible as evidence in court.", when:"If police ask you to sign a statement.", whom:"Any person questioned during police investigation." }
+    ],
+    say:[
+      { label:"When asked to unlock phone", text:"I do not consent to unlocking my phone. I am asserting my right to privacy under Article 21 of the Constitution." },
+      { label:"When being detained", text:"Am I under arrest? If yes, please state the grounds. I wish to speak to my lawyer immediately." },
+      { label:"When being questioned", text:"I choose to remain silent. I will only answer questions in the presence of my advocate." }
+    ],
+    evidence:["📸 Photograph the officer's name badge and vehicle number","📝 Note exact time and location of the interaction","🎥 You can video record in public — police cannot stop this","📞 Inform a trusted person of your location immediately","📋 Write everything down as soon as you are free"],
+    contacts:[{num:"100",name:"Police Control Room",desc:"Immediate assistance"},{num:"15100",name:"NALSA Legal Aid",desc:"Free legal assistance"},{num:"1800-180-1522",name:"Human Rights Commission",desc:"Rights violations"}]
+  },
+  {
+    id:2, name:"Arrest & Detention", emoji:"⚖️", desc:"Being arrested or held",
+    tag:"Article 22", cat:"enforcement", bg:"#FFF0E8",
+    rights:[
+      "You must be told the grounds of arrest immediately — verbally and in writing.",
+      "You cannot be detained for more than 24 hours without a magistrate's order.",
+      "You have the right to consult a lawyer of your choice immediately.",
+      "You have the right to inform a family member or friend about your arrest.",
+      "For bailable offences, you can apply for bail immediately.",
+      "You have the right to medical examination if you claim injury.",
+      "Women cannot be arrested between sunset and sunrise (except with magistrate's order).",
+      "You have the right to a fair and speedy trial."
+    ],
+    laws:[
+      { name:"Article 22 — Constitution", articles:["Art. 22"], what:"Fundamental right against arbitrary arrest. Mandates informing grounds of arrest, right to counsel, and 24-hour magistrate production.", when:"At the moment of arrest and throughout detention.", whom:"All persons arrested in India." },
+      { name:"CrPC Section 50", articles:["CrPC §50"], what:"Every arrested person must be immediately informed of the grounds of arrest and right to bail.", when:"At the time of arrest — before or upon handcuffing.", whom:"Every person being arrested." },
+      { name:"CrPC Section 57", articles:["CrPC §57"], what:"No person can be detained in custody for longer than 24 hours without production before a magistrate.", when:"If you have been held overnight by police.", whom:"Any detained person in a police lockup." }
+    ],
+    say:[
+      { label:"On arrest", text:"I demand to know the grounds of my arrest. Please provide this in writing. I also wish to contact my lawyer and family immediately." },
+      { label:"After 24 hours", text:"I have been detained for more than 24 hours. Under CrPC Section 57 and Article 22, I must be produced before a magistrate immediately." }
+    ],
+    evidence:["📸 Note badge number of arresting officer","⏰ Record exact time of arrest","📞 Immediately call a family member or lawyer","📋 Request a copy of the arrest memo","🏥 Request medical examination if injured"],
+    contacts:[{num:"15100",name:"NALSA Free Legal Aid",desc:"Free lawyer guaranteed"},{num:"100",name:"Police Control Room",desc:"For police misconduct"},{num:"1800-11-4000",name:"Consumer Helpline",desc:"Legal guidance"}]
+  },
+  {
+    id:3, name:"Hospital & Medical", emoji:"🏥", desc:"Treatment, consent, bills",
+    tag:"SC 1989 Ruling", cat:"civil", bg:"#E8F5E9",
+    rights:[
+      "Every hospital must provide emergency treatment regardless of ability to pay.",
+      "You have the right to know your diagnosis, treatment options and risks.",
+      "No surgery or major procedure can happen without your informed written consent.",
+      "You have the right to a second medical opinion.",
+      "You can request itemized bills — hospitals must provide them.",
+      "Hospitals cannot withhold a dead body if bills are unpaid.",
+      "You have the right to your medical records at any time.",
+      "Private hospitals cannot refuse emergency treatment due to lack of money."
+    ],
+    laws:[
+      { name:"SC Ruling 1989 — Paschim Banga", articles:["SC 1989"], what:"Supreme Court ruled that every person has the right to emergency medical treatment. Hospitals cannot deny this.", when:"When a hospital refuses to treat you due to non-payment.", whom:"All persons, especially in life-threatening emergencies." },
+      { name:"Consumer Protection Act 2019", articles:["CPA 2019"], what:"Medical negligence is a deficiency in service — you can file a consumer complaint against a doctor or hospital.", when:"If you or a family member suffered due to medical negligence.", whom:"Patients and their families." },
+      { name:"MCI Code of Medical Ethics", articles:["MCI §13"], what:"Patients have the right to informed consent and full disclosure of treatment options.", when:"Before any surgery, procedure, or significant treatment.", whom:"All patients in India." }
+    ],
+    say:[
+      { label:"Emergency treatment refused", text:"Under the Supreme Court's 1989 ruling in Paschim Banga v. State of WB, every hospital must provide emergency treatment. I demand immediate treatment." },
+      { label:"Bill dispute", text:"Under CPA 2019, I request an itemized bill. I also request copies of all my medical records and the consent forms I signed." }
+    ],
+    evidence:["📋 Keep all prescriptions and discharge summaries","💰 Collect all payment receipts","📸 Photograph any visible injury or condition","✍️ Note names of doctors and nurses who treated you","⏰ Record all times of treatment and refusals"],
+    contacts:[{num:"104",name:"Medical Helpline",desc:"State health department"},{num:"14555",name:"Ayushman Bharat",desc:"Health scheme queries"},{num:"1800-11-4000",name:"Consumer Helpline",desc:"Medical negligence complaints"}]
+  },
+  {
+    id:4, name:"Workplace Rights", emoji:"💼", desc:"Salary, harassment, dismissal",
+    tag:"Labour Laws", cat:"civil", bg:"#FFF8E8",
+    rights:[
+      "Salary must be paid on time — delayed salary is an offence under Payment of Wages Act.",
+      "Maximum working hours: 8 hours/day, 48 hours/week for factories.",
+      "You are entitled to overtime pay (double rate) for extra hours.",
+      "Sexual harassment at workplace is a criminal offence under POSH Act.",
+      "Dismissal without due process or notice is illegal under Industrial Disputes Act.",
+      "You have the right to form or join a trade union.",
+      "Maternity leave of 26 weeks is mandatory (Maternity Benefits Act).",
+      "No discrimination based on gender, caste, religion, or disability is allowed."
+    ],
+    laws:[
+      { name:"Payment of Wages Act 1936", articles:["PWA 1936"], what:"Guarantees timely payment of wages. Employer cannot delay salary beyond the 7th or 10th of every month.", when:"If your salary is delayed or deducted without justification.", whom:"All employees earning up to ₹24,000/month; higher earners under contract law." },
+      { name:"POSH Act 2013", articles:["POSH 2013"], what:"Every workplace with 10+ employees must have an Internal Complaints Committee. Sexual harassment is a criminal offence.", when:"On facing sexual harassment, hostile work environment, or quid pro quo situations.", whom:"All women employees including contractual, temporary, and domestic workers." },
+      { name:"Industrial Disputes Act 1947", articles:["ID Act 1947"], what:"Workers in establishments with 100+ employees cannot be dismissed without government permission and due process.", when:"If you are dismissed, retrenched, or laid off without proper notice or process.", whom:"All industrial workers covered under the Act." }
+    ],
+    say:[
+      { label:"Salary withheld", text:"Under the Payment of Wages Act 1936, my salary must be paid by the stipulated date. Withholding salary without cause is an offence. I request immediate payment." },
+      { label:"Harassment at work", text:"I am formally reporting sexual harassment under the POSH Act 2013. I request a written acknowledgment and initiation of ICC proceedings within 7 days." }
+    ],
+    evidence:["📧 Save all email communications","📸 Screenshot any harassing messages","💰 Keep copies of salary slips and bank statements","📋 Document all incidents with date, time, and witnesses","✍️ Send a formal written complaint to HR (get receipt)"],
+    contacts:[{num:"1800-11-4000",name:"Labour Ministry Helpline",desc:"Workplace rights"},{num:"1091",name:"Women Helpline",desc:"Workplace harassment"},{num:"14441",name:"ESI Helpline",desc:"Employee benefits"}]
+  },
+  {
+    id:5, name:"Landlord & Housing", emoji:"🏠", desc:"Eviction, deposits, repairs",
+    tag:"Rent Act", cat:"property", bg:"#F3E8FF",
+    rights:[
+      "A landlord cannot evict you without a court order — self-help eviction is illegal.",
+      "Security deposit cannot exceed 2 months rent in most states.",
+      "You are entitled to a written rent agreement.",
+      "Landlord must give 15-30 days written notice before any eviction proceedings.",
+      "Essential services (water, electricity) cannot be cut to force you out.",
+      "You have the right to a receipt for every rent payment.",
+      "Landlord cannot enter premises without prior notice and consent.",
+      "Rent increase must follow state-specific rules and proper notice."
+    ],
+    laws:[
+      { name:"Transfer of Property Act 1882", articles:["TPA 1882"], what:"Governs landlord-tenant relationships. Protects tenants from illegal eviction and defines rights of both parties.", when:"For all rental disputes — eviction, deposit, rent increase.", whom:"All tenants in India." },
+      { name:"State Rent Control Acts", articles:["Rent Acts"], what:"State-specific laws limit rent increase, protect from eviction, and define landlord obligations.", when:"When facing eviction or unreasonable rent hike.", whom:"Tenants in regulated premises." },
+      { name:"IPC Section 441 — Criminal Trespass", articles:["IPC §441"], what:"A landlord who illegally enters your rental property or cuts utilities to evict you can be prosecuted.", when:"If landlord enters without notice or cuts water/electricity.", whom:"Any tenant facing illegal harassment by landlord." }
+    ],
+    say:[
+      { label:"Illegal eviction attempt", text:"You cannot evict me without a valid court order under the Transfer of Property Act. Any forcible eviction is illegal and I will file a police complaint under IPC 441." },
+      { label:"Deposit not returned", text:"My tenancy ended on [date]. Under our agreement, the security deposit of ₹[amount] is due within [X] days. Please return it immediately or provide written justification for any deductions." }
+    ],
+    evidence:["📄 Keep original rent agreement copy","💰 Collect rent receipts for every payment","📧 Save all communication with landlord","📸 Photograph property condition on entry and exit","✍️ Send a legal notice via registered post for disputes"],
+    contacts:[{num:"1800-11-4000",name:"Consumer Helpline",desc:"Tenant rights"},{num:"14441",name:"Housing Authority",desc:"Housing complaints"},{num:"100",name:"Police",desc:"Illegal eviction"}]
+  },
+  {
+    id:6, name:"Consumer Rights", emoji:"🛒", desc:"Defective products, fraud",
+    tag:"CPA 2019", cat:"civil", bg:"#E8FFF0",
+    rights:[
+      "Right to safety — products must not be hazardous to life or property.",
+      "Right to be informed — full, accurate information about products/services.",
+      "Right to choose — access to competitive products at fair prices.",
+      "Right to be heard — your complaint must be addressed by seller/manufacturer.",
+      "Right to seek redressal — file complaint at Consumer Forum (up to ₹1 Cr = District Forum).",
+      "Right to consumer education — access to information about rights.",
+      "You can claim refund, replacement, or compensation for defective goods.",
+      "E-commerce platforms are also liable under CPA 2019."
+    ],
+    laws:[
+      { name:"Consumer Protection Act 2019", articles:["CPA 2019"], what:"Comprehensive law protecting consumers. Establishes District, State, and National Consumer Commissions for dispute resolution.", when:"For defective products, deficient services, unfair trade practices, e-commerce fraud.", whom:"All consumers — anyone who buys goods or avails services." },
+      { name:"E-Commerce Rules 2020", articles:["EC Rules 2020"], what:"E-commerce platforms must display all product details, have a grievance officer, and process refunds within 7 days.", when:"When an online platform refuses refund, delivers damaged goods, or engages in misleading advertising.", whom:"All online shoppers in India." }
+    ],
+    say:[
+      { label:"Defective product", text:"Under the Consumer Protection Act 2019, I am entitled to a refund/replacement for this defective product. If not resolved in 15 days, I will file a complaint at the District Consumer Commission." },
+      { label:"Service deficiency", text:"This is a formal complaint regarding deficiency in service. Under CPA 2019, I request resolution within 15 days failing which I will approach the consumer forum." }
+    ],
+    evidence:["🧾 Keep all bills, invoices, and e-receipts","📸 Photograph defects or damage immediately","📧 Save all chat/email with seller","📦 Preserve original packaging","✍️ Write a formal complaint to seller (get acknowledgment)"],
+    contacts:[{num:"1800-11-4000",name:"National Consumer Helpline",desc:"Free consumer advice"},{num:"14404",name:"Consumer Forum Info",desc:"Forum locations"},{num:"1915",name:"PG Portal",desc:"Government grievance portal"}]
+  },
+  {
+    id:7, name:"Cybercrime & Fraud", emoji:"💻", desc:"Online scams, hacking, data theft",
+    tag:"IT Act 2000", cat:"digital", bg:"#E8F0FF",
+    rights:[
+      "You have the right to report cybercrime at cybercrime.gov.in or 1930.",
+      "Banks must reverse unauthorized transactions reported within 3 days (RBI guidelines).",
+      "Hacking into your device is a criminal offence under IT Act Section 43.",
+      "You have the right to data privacy — your data cannot be sold without consent.",
+      "Spreading your private images without consent (morphed/intimate) is a crime.",
+      "Online fraud must be reported within 1 hour for maximum chance of fund recovery.",
+      "You can file FIR at any police station for cybercrime under zero FIR rule.",
+      "IT Act provides for compensation up to ₹1 Crore for data breaches."
+    ],
+    laws:[
+      { name:"IT Act 2000 — Section 66", articles:["IT Act §66"], what:"Computer hacking, data theft, identity fraud are criminal offences punishable with up to 3 years imprisonment.", when:"If your accounts, devices, or personal data are compromised.", whom:"Any person whose digital assets or identity are misused." },
+      { name:"IT Act — Section 66C & 66D", articles:["IT Act §66C","IT Act §66D"], what:"Identity theft and impersonation using computer resources is punishable with up to 3 years and ₹1 lakh fine.", when:"If someone uses your identity, OTP, or credentials fraudulently.", whom:"Victims of phishing, SIM swap, UPI fraud." },
+      { name:"RBI Circular — Unauthorized Transactions", articles:["RBI 2017"], what:"If you report an unauthorized bank transaction within 3 working days, you bear zero liability. Bank must reverse the amount.", when:"Immediately on discovering any unauthorized transaction in your account.", whom:"All bank account holders in India." }
+    ],
+    say:[
+      { label:"Bank fraud", text:"I am reporting an unauthorized transaction of ₹[amount] on [date]. Under RBI's 2017 circular on customer liability, I request immediate reversal. I am also filing a complaint at 1930." },
+      { label:"Account hacked", text:"My account has been compromised. Under IT Act Section 66, I request you block my account immediately and help me file a cybercrime complaint." }
+    ],
+    evidence:["📸 Screenshot all fraudulent messages immediately","🏦 Download bank statements showing unauthorized transactions","📧 Save all phishing emails — do not delete","🕐 Note exact time of fraud — golden hour is 1 hour","📞 Call 1930 within 1 hour of financial cybercrime"],
+    contacts:[{num:"1930",name:"Cyber Crime Helpline",desc:"Report within 1 hour"},{num:"cybercrime.gov.in",name:"Online Portal",desc:"File cybercrime complaint"},{num:"1800-11-0001",name:"RBI Helpline",desc:"Banking fraud"}]
+  },
+  {
+    id:8, name:"Domestic Violence", emoji:"🛡️", desc:"Physical, mental, economic abuse",
+    tag:"PWDVA 2005", cat:"social", bg:"#FFE8E8",
+    rights:[
+      "You have the right to live in a shared household even without property ownership.",
+      "You can get a Protection Order within 1-3 days in emergencies.",
+      "You are entitled to monetary relief for medical expenses, lost earnings.",
+      "A Domestic Incident Report (DIR) must be filed by a Protection Officer free of cost.",
+      "Emotional, verbal, and economic abuse are recognized as domestic violence.",
+      "You can call 181 (women helpline) for immediate help and shelter.",
+      "You do not need to leave your home — you can seek order to remove abuser.",
+      "Men can also be abused — other laws like IPC 323, 498A apply."
+    ],
+    laws:[
+      { name:"PWDVA 2005", articles:["PWDVA 2005"], what:"Protection of Women from Domestic Violence Act. Provides protection orders, residence orders, and monetary relief to victims.", when:"Facing physical, verbal, emotional, sexual, or economic abuse from any household member.", whom:"Women (and children) in domestic relationships — married, live-in, or family." },
+      { name:"IPC Section 498A", articles:["IPC §498A"], what:"Criminal cruelty by husband or in-laws — punishable with up to 3 years imprisonment and fine.", when:"For physical or mental cruelty, dowry harassment by husband or his relatives.", whom:"Married women facing harassment." },
+      { name:"IPC Section 354", articles:["IPC §354"], what:"Assault on a woman with intent to outrage her modesty — punishable with imprisonment and fine.", when:"For physical assault, inappropriate touching, or molestation.", whom:"Any woman facing such assault." }
+    ],
+    say:[
+      { label:"Seeking protection", text:"I am a victim of domestic violence under the PWDVA 2005. I am requesting an emergency Protection Order. I want to file a Domestic Incident Report immediately." },
+      { label:"To police", text:"I want to file an FIR under IPC 498A and PWDVA 2005. This is a cognizable offence and you are legally required to register my complaint." }
+    ],
+    evidence:["📸 Photograph all injuries — date and time stamp","🏥 Get medical examination even for minor injuries","📱 Screenshot all threatening messages","👥 Note names of witnesses","📋 Keep diary of all incidents with dates"],
+    contacts:[{num:"181",name:"Women Helpline",desc:"Immediate help & shelter"},{num:"1091",name:"Women Safety",desc:"24/7 helpline"},{num:"100",name:"Police",desc:"Emergency"},{num:"15100",name:"NALSA Legal Aid",desc:"Free legal help"}]
+  },
+  {
+    id:9, name:"Women's Rights", emoji:"♀️", desc:"Harassment, equality, assault",
+    tag:"POSH·IPC", cat:"social", bg:"#FFE8F5",
+    rights:[
+      "Right to work in a safe environment free from sexual harassment (POSH Act).",
+      "Right to equal pay for equal work — Gender Pay Gap is illegal.",
+      "Right to maternity leave: 26 weeks for first two children (Maternity Benefits Act).",
+      "Women cannot be arrested between 6 PM and 6 AM without magistrate permission.",
+      "Night arrest of women requires presence of a female police officer.",
+      "Medical examination after assault must be done by a female doctor (IPC 164A).",
+      "You have the right to record your statement before a magistrate, not police.",
+      "FIR for sexual assault can be filed at any police station — zero FIR."
+    ],
+    laws:[
+      { name:"POSH Act 2013", articles:["POSH 2013"], what:"Prevention, prohibition and redressal of sexual harassment at workplace. Mandatory ICC for 10+ employee organizations.", when:"Sexual harassment at workplace, office parties, official travel.", whom:"All women employees." },
+      { name:"IPC Section 354A-D", articles:["IPC §354A","IPC §354B","IPC §354C","IPC §354D"], what:"Covers sexual harassment, assault, voyeurism, and stalking — all punishable with imprisonment.", when:"For stalking, voyeurism, unwanted physical contact, or sexual verbal assault.", whom:"All women facing such offences." },
+      { name:"Maternity Benefits Act 1961", articles:["MBA 1961 (amended 2017)"], what:"26 weeks fully paid maternity leave for first two children, 12 weeks for subsequent. Also covers miscarriage and tubectomy.", when:"On becoming pregnant while employed.", whom:"Women employees in establishments with 10+ employees." }
+    ],
+    say:[
+      { label:"Filing assault complaint", text:"I wish to file an FIR for sexual assault under IPC 376. Under Section 154(1) CrPC, you are obligated to register my complaint. I also request examination by a female doctor." },
+      { label:"Workplace harassment", text:"I am formally reporting sexual harassment under the POSH Act 2013. I demand the Internal Complaints Committee be convened within 7 days and my identity kept confidential." }
+    ],
+    evidence:["🏥 Medical examination within 72 hours of assault is crucial","📸 Preserve all physical evidence","📱 Screenshot all harassing digital messages","👥 Inform a trusted person immediately","📋 Write down all details while memory is fresh"],
+    contacts:[{num:"1091",name:"Women Safety Helpline",desc:"24/7"},{num:"181",name:"Women Helpline",desc:"Domestic help"},{num:"7827-170-170",name:"iCall",desc:"Mental health support"},{num:"100",name:"Police",desc:"Emergency"}]
+  },
+  {
+    id:10, name:"Right to Information", emoji:"📄", desc:"Government transparency, public info",
+    tag:"RTI Act 2005", cat:"civil", bg:"#FFFDE8",
+    rights:[
+      "Every citizen can request information from any government body.",
+      "Response must be provided within 30 days (48 hours for life/liberty matters).",
+      "Application fee is ₹10 only — BPL citizens pay nothing.",
+      "You can appeal to First Appellate Authority if unsatisfied.",
+      "Second appeal goes to the State/Central Information Commissioner.",
+      "Disclosure cannot be denied for information relating to your life or safety.",
+      "Officials who deny valid RTI can face penalties up to ₹25,000.",
+      "Information about corruption, misuse of power must be disclosed."
+    ],
+    laws:[
+      { name:"RTI Act 2005", articles:["RTI Act 2005"], what:"Right to Information Act — every citizen can ask any public authority for information. Promotes transparency and accountability.", when:"To know status of a government application, check public spending, expose corruption.", whom:"All Indian citizens." },
+      { name:"CIC — Central Information Commissioner", articles:["RTI §19"], what:"If your RTI is rejected or ignored, you can appeal to the Information Commissioner within 90 days.", when:"When PIO fails to respond within 30 days or gives unsatisfactory response.", whom:"All RTI applicants." }
+    ],
+    say:[
+      { label:"Filing RTI", text:"Under the RTI Act 2005, I hereby request the following information: [specify]. I am enclosing a fee of ₹10 via IPO/DD. Please respond within 30 days as mandated." },
+      { label:"First appeal", text:"I am filing a First Appeal under Section 19(1) of the RTI Act 2005. The Public Information Officer has failed to provide the requested information within 30 days." }
+    ],
+    evidence:["📬 Send RTI by registered post — keep receipt","💰 Attach ₹10 IPO or court fee stamp","📋 Keep copies of all RTI applications","📆 Note dates — 30 day deadline is strict","📧 Online RTI portal: rtionline.gov.in"],
+    contacts:[{num:"rtionline.gov.in",name:"Online RTI Portal",desc:"File RTI online"},{num:"1800-11-0001",name:"CIC Helpline",desc:"RTI complaints"},{num:"14441",name:"Govt Helpline",desc:"RTI guidance"}]
+  },
+  {
+    id:11, name:"Disability Rights", emoji:"♿", desc:"Accessibility, employment, education",
+    tag:"RPwD 2016", cat:"social", bg:"#E8F5FF",
+    rights:[
+      "4% reservation in government jobs for persons with benchmark disability.",
+      "Right to free education up to 18 years for children with disabilities.",
+      "Private establishments with 20+ employees must not discriminate against disabled.",
+      "All public buildings must be accessible (ramps, lifts, tactile paths).",
+      "Persons with severe disability get 5% reservation in promotions.",
+      "Right to equal participation in cultural, recreational activities.",
+      "Right to choose where to live and with whom — autonomy must be respected.",
+      "Disabled voters have the right to assisted voting."
+    ],
+    laws:[
+      { name:"Rights of Persons with Disabilities Act 2016", articles:["RPwD 2016"], what:"Comprehensive disability rights law covering 21 categories of disability. Provides for reservation, education, employment, and accessibility rights.", when:"Facing discrimination in employment, education, housing, or public access.", whom:"Persons with disabilities as defined under the Act." },
+      { name:"National Trust Act 1999", articles:["NTA 1999"], what:"Provides for legal guardianship and welfare of persons with autism, cerebral palsy, mental retardation, and multiple disabilities.", when:"For guardianship, care, and welfare of severely disabled persons.", whom:"Persons with autism, CP, intellectual disabilities, and multiple disabilities." }
+    ],
+    say:[
+      { label:"Employment discrimination", text:"Under the Rights of Persons with Disabilities Act 2016, I am protected from discrimination in employment. Refusing to hire or promote me solely due to my disability is illegal." },
+      { label:"Accessibility denial", text:"Under RPwD 2016, public establishments must be accessible. Denying me access due to inaccessibility is a violation of my rights. I request immediate remediation." }
+    ],
+    evidence:["📋 Keep disability certificate (UDID card)","📸 Photograph inaccessible infrastructure","📧 Document all discriminatory communications","✍️ File formal complaint with District Magistrate","📱 Contact NIPUN portal for disability grievances"],
+    contacts:[{num:"1800-111-900",name:"NHRC Helpline",desc:"Rights violations"},{num:"1800-572-8282",name:"Disability Helpline",desc:"Welfare and rights"},{num:"15100",name:"NALSA Legal Aid",desc:"Free legal help"}]
+  },
+  {
+    id:12, name:"Road Accidents", emoji:"🚗", desc:"Accident rights, compensation, FIR",
+    tag:"MV Act 1988", cat:"civil", bg:"#FFF0E8",
+    rights:[
+      "You have the right to cashless treatment at empanelled hospitals — Motor Vehicle Act.",
+      "Claim compensation even if you are the cyclist, pedestrian, or pillion rider.",
+      "Third-party insurance is mandatory — insurer must pay for injury/death.",
+      "Good Samaritans helping accident victims are legally protected.",
+      "Hospital cannot demand police clearance before treating accident victims.",
+      "Compensation is calculated on earning capacity, age, and severity of injury.",
+      "Hit-and-run victims can claim compensation from Solatium Fund.",
+      "Motor Accident Claims Tribunal (MACT) handles compensation claims."
+    ],
+    laws:[
+      { name:"Motor Vehicles Act 1988 (Amended 2019)", articles:["MV Act 1988"], what:"Comprehensive law covering road accidents, insurance, compensation, and Good Samaritan protection.", when:"After any road accident — as victim, helper, or family member of deceased.", whom:"All road accident victims and witnesses." },
+      { name:"Good Samaritan Guidelines 2015", articles:["SC Guidelines 2015"], what:"A person who helps an accident victim cannot be detained by police or forced to be a witness. Full legal protection.", when:"When you want to help an accident victim but fear being harassed by police.", whom:"Any person who stops to help an accident victim." },
+      { name:"MACT — Motor Accident Claims Tribunal", articles:["MV Act §166"], what:"File for compensation within 6 months of accident. Tribunal can award compensation without proving negligence in hit-and-run cases.", when:"To claim compensation for injuries, medical bills, or death of a family member.", whom:"Accident victims and their legal heirs." }
+    ],
+    say:[
+      { label:"Hospital refusing treatment", text:"Under the Motor Vehicles Act and SC directives, this hospital must provide emergency treatment to accident victims. Refusing treatment is a criminal offence." },
+      { label:"Filing MACT claim", text:"I am filing a compensation claim before the Motor Accident Claims Tribunal under Section 166 of the Motor Vehicles Act 1988 for the accident on [date] at [location]." }
+    ],
+    evidence:["📸 Photograph accident scene immediately","🚗 Note vehicle numbers of all involved","🏥 Keep all medical bills and records","👮 Get FIR copy from police","📋 Collect witness names and contact numbers"],
+    contacts:[{num:"1073",name:"Road Accident Helpline",desc:"National highway accidents"},{num:"108",name:"Ambulance",desc:"Medical emergency"},{num:"1800-180-6132",name:"MACT Helpline",desc:"Compensation claims"}]
+  },
+  {
+    id:13, name:"Education Rights", emoji:"📚", desc:"School, college, discrimination",
+    tag:"RTE Act 2009", cat:"social", bg:"#E8FFF5",
+    rights:[
+      "Free and compulsory education for children aged 6-14 (Right to Education Act).",
+      "Private schools must reserve 25% seats for economically weaker sections.",
+      "No child can be expelled, failed, or held back up to Class 8.",
+      "No child can be subjected to corporal punishment in school.",
+      "SC/ST/OBC students have reservation rights in all government institutions.",
+      "PwD students get 5% reservation in higher education.",
+      "No discrimination based on religion, caste, gender in government schools.",
+      "University must provide reasonable accommodation for disabled students."
+    ],
+    laws:[
+      { name:"Right to Education Act 2009", articles:["RTE 2009"], what:"Constitutional right to free and compulsory education for all children between 6-14 years.", when:"If a child is denied admission or asked to pay fees in government school.", whom:"All children aged 6-14 years in India." },
+      { name:"UGC Regulations 2016", articles:["UGC 2016"], what:"Universities must have anti-ragging committees, gender sensitization cells, and grievance redressal mechanisms.", when:"Facing ragging, harassment, or unfair treatment in college.", whom:"All university students." }
+    ],
+    say:[
+      { label:"Admission denied", text:"Under the RTE Act 2009, every child has the right to free and compulsory education. Denying admission to my child is a violation of Article 21A of the Constitution." },
+      { label:"Corporal punishment", text:"Corporal punishment is prohibited under RTE Act Section 17. I am filing a formal complaint with the school authorities and the State Child Rights Commission." }
+    ],
+    evidence:["📋 Keep admission forms and correspondence","📸 Photograph any physical injuries from punishment","📧 Save all communication with school/college","📋 File complaint with Block Education Officer","📞 Call 1098 (Childline) for urgent help"],
+    contacts:[{num:"1098",name:"Childline",desc:"Child rights emergency"},{num:"1800-11-0001",name:"Education Ministry",desc:"Education rights"},{num:"15100",name:"NALSA",desc:"Free legal aid"}]
+  },
+  {
+    id:14, name:"Senior Citizen Rights", emoji:"👴", desc:"Maintenance, abuse, property",
+    tag:"MWPSC 2007", cat:"social", bg:"#FFF5E8",
+    rights:[
+      "Adult children are legally obligated to maintain parents (Maintenance Act 2007).",
+      "Can claim maintenance up to ₹10,000/month from children through tribunal.",
+      "Right to reclaim property transferred to children if they neglect you.",
+      "Banks must have senior-friendly counters and priority service.",
+      "Senior citizens get priority in government services and hospitals.",
+      "Abuse of senior citizens is a criminal offence under the Act.",
+      "Right to live with dignity — no one can throw a senior citizen out of home.",
+      "MWPSC tribunals can issue residence orders for protection."
+    ],
+    laws:[
+      { name:"Maintenance and Welfare of Parents and Senior Citizens Act 2007", articles:["MWPSC 2007"], what:"Mandates children and grandchildren to maintain parents. Provides for fast-track tribunals and residence rights.", when:"When children neglect or abandon elderly parents, or for property disputes.", whom:"All senior citizens above 60 years." }
+    ],
+    say:[
+      { label:"Seeking maintenance", text:"Under MWPSC Act 2007, my children are legally obligated to maintain me. I am filing an application before the Sub-Divisional Magistrate for monthly maintenance." }
+    ],
+    evidence:["📋 Keep property documents safely","📄 Maintain records of transfers made to children","📸 Document any physical abuse","✍️ File complaint with Maintenance Tribunal (SDM)","📞 Call 14567 Senior Citizen Helpline"],
+    contacts:[{num:"14567",name:"Senior Citizen Helpline",desc:"Abuse and neglect"},{num:"1800-180-5129",name:"NALSA for Seniors",desc:"Legal aid"},{num:"100",name:"Police",desc:"Emergency abuse"}]
+  },
+  {
+    id:15, name:"LGBTQ+ Rights", emoji:"🏳️‍🌈", desc:"Discrimination, dignity, safety",
+    tag:"Article 15·21", cat:"social", bg:"#F0E8FF",
+    rights:[
+      "Section 377 is decriminalized — consensual adult same-sex relations are not criminal (SC 2018).",
+      "Right to dignity and non-discrimination under Articles 14, 15, 19, 21.",
+      "Transgender persons have right to self-identified gender (Transgender Persons Act 2019).",
+      "Transgender persons cannot be discriminated in employment and education.",
+      "Right to change gender on official documents without surgery requirement.",
+      "Transgender persons entitled to reservation as OBC in education and jobs.",
+      "Protection from harassment, exploitation and abuse.",
+      "Can file FIR for harassment, assault, or sexual violence."
+    ],
+    laws:[
+      { name:"Transgender Persons (Protection of Rights) Act 2019", articles:["TPPR 2019"], what:"Prohibits discrimination against transgender persons in employment, education, healthcare, and access to public places.", when:"Facing discrimination, harassment, or denial of service based on gender identity.", whom:"All transgender and intersex persons in India." },
+      { name:"Navtej Johar v. Union of India 2018", articles:["SC 2018"], what:"Supreme Court decriminalized consensual adult same-sex relationships — IPC 377 no longer applies to consensual acts.", when:"If threatened with prosecution or harassed under IPC 377.", whom:"All LGBTQ+ persons in India." }
+    ],
+    say:[
+      { label:"Discrimination complaint", text:"Under the Transgender Persons Act 2019 and Articles 14 and 21 of the Constitution, discrimination based on gender identity is illegal. I am filing a formal complaint." }
+    ],
+    evidence:["📋 Document all instances of discrimination","📸 Screenshot harassing messages","✍️ File complaint with police (must be registered)","📧 Complaint to National Human Rights Commission","📞 Contact LGBTQ+ helplines for support"],
+    contacts:[{num:"iCall: 9152987821",name:"LGBTQ+ Support",desc:"Mental health, legal help"},{num:"15100",name:"NALSA",desc:"Free legal aid"},{num:"1800-11-0001",name:"NHRC",desc:"Rights violations"}]
+  },
+  {
+    id:16, name:"Land & Property Rights", emoji:"🏗️", desc:"Acquisition, disputes, records",
+    tag:"Land Acquisition Act", cat:"property", bg:"#E8F5E9",
+    rights:[
+      "Government can acquire land only for public purpose with fair compensation.",
+      "Compensation must be paid before possession — usually 2-4x market rate.",
+      "You have the right to challenge land acquisition in court.",
+      "No encroachment on agricultural land without due process.",
+      "You have the right to inspect land records (Pahani/Khata) free of cost.",
+      "Benami transactions are illegal — property held in another's name for you is void.",
+      "Succession rights — Hindu/Muslim/Christian law governs inheritance.",
+      "Right to mutation of property records after inheritance or purchase."
+    ],
+    laws:[
+      { name:"Land Acquisition Act 2013", articles:["RFCTLARR 2013"], what:"Mandates social impact assessment, consent of 70% landowners for PPP projects, and enhanced compensation.", when:"When government acquires your land for any project.", whom:"All landowners facing government acquisition." }
+    ],
+    say:[
+      { label:"Challenging acquisition", text:"I am challenging this land acquisition under the RFCTLARR Act 2013. No social impact assessment has been conducted and compensation is inadequate. I request a stay." }
+    ],
+    evidence:["📋 Keep all property documents (7/12, Khata)","📸 Photograph current land use","📄 Get certified copies of land records from tehsil","✍️ File objection within 60 days of acquisition notice","📞 Contact District Collector office for disputes"],
+    contacts:[{num:"1800-11-4000",name:"Land Helpline",desc:"Property disputes"},{num:"14441",name:"Registration Helpline",desc:"Property registration"},{num:"15100",name:"NALSA",desc:"Free legal aid"}]
+  },
+  {
+    id:17, name:"Environmental Rights", emoji:"🌿", desc:"Pollution, noise, clean air",
+    tag:"EPA 1986", cat:"civil", bg:"#E8F9E8",
+    rights:[
+      "Right to clean air and water as part of Right to Life (Article 21).",
+      "You can file PIL for environmental violations affecting public.",
+      "Right to information about pollution levels and factory emissions.",
+      "Industries must maintain emission standards — violations are criminal.",
+      "Noise pollution above permitted levels is actionable.",
+      "Right to file complaint with Pollution Control Board (free of charge).",
+      "Green Tribunal (NGT) handles environmental cases faster than civil courts.",
+      "Right to participate in environmental hearings for projects near you."
+    ],
+    laws:[
+      { name:"Environment Protection Act 1986", articles:["EPA 1986"], what:"Comprehensive environmental law — sets pollution standards, empowers government to take action against polluters.", when:"For factory pollution, illegal dumping, water contamination affecting your area.", whom:"Any person or community affected by pollution." },
+      { name:"National Green Tribunal Act 2010", articles:["NGT Act 2010"], what:"Specialized court for fast disposal of environmental disputes. Can award compensation and order remediation.", when:"For industrial pollution, illegal construction near water bodies, forest encroachments.", whom:"Any individual or group affected by environmental harm." }
+    ],
+    say:[
+      { label:"Reporting pollution", text:"I am filing a complaint regarding illegal pollution by [company/party] causing harm to [air/water/land] in [area]. Under EPA 1986, this is a criminal offence. I request immediate action." }
+    ],
+    evidence:["📸 Photograph visible pollution or damage","🎥 Video evidence of emissions or dumping","📋 Get air/water quality tests done","📧 File complaint with State PCB","📝 File application before NGT (low fee)"],
+    contacts:[{num:"ngt.nic.in",name:"National Green Tribunal",desc:"Environmental cases"},{num:"1800-11-4000",name:"PCB Helpline",desc:"Pollution complaints"},{num:"14441",name:"MOEF Helpline",desc:"Forest and environment"}]
+  },
+  {
+    id:18, name:"Food Safety Rights", emoji:"🍽️", desc:"Adulteration, food quality, restaurants",
+    tag:"FSSAI 2006", cat:"civil", bg:"#FFFAE8",
+    rights:[
+      "Right to safe, wholesome food free from adulteration.",
+      "Restaurants and hotels must display licenses and menus with prices.",
+      "No service charge is mandatory — you can refuse to pay it.",
+      "Restaurants cannot charge more than MRP on packaged items.",
+      "You can file complaint for adulterated food at FSSAI.",
+      "Street vendors must have FSSAI registration.",
+      "Right to information about ingredients, allergens in packaged food.",
+      "Penalties for adulteration: up to life imprisonment for dangerous cases."
+    ],
+    laws:[
+      { name:"Food Safety and Standards Act 2006", articles:["FSSAI 2006"], what:"Governs food safety, quality standards, labelling, and licensing for all food businesses in India.", when:"For adulterated food, misleading labels, unlicensed food vendors.", whom:"All consumers purchasing food products or eating in restaurants." }
+    ],
+    say:[
+      { label:"Adulterated food complaint", text:"Under the FSSAI Act 2006, selling adulterated food is a criminal offence. I am filing a complaint with the Food Safety Officer and the FSSAI online portal." }
+    ],
+    evidence:["📦 Keep sample of suspicious food","🧾 Keep purchase receipt/bill","📸 Photograph the product and label","📧 File complaint at foscos.fssai.gov.in","📞 Call 1800-11-4000 (FSSAI helpline)"],
+    contacts:[{num:"1800-11-4000",name:"FSSAI Helpline",desc:"Food safety complaints"},{num:"1800-11-0001",name:"Consumer Helpline",desc:"Restaurant complaints"},{num:"14441",name:"Weights & Measures",desc:"Overcharging"}]
+  },
+  {
+    id:19, name:"Banking & Finance Rights", emoji:"🏦", desc:"Loans, fraud, disputes",
+    tag:"RBI Guidelines", cat:"civil", bg:"#E8EEFF",
+    rights:[
+      "Right to receive loan rejection in writing with reasons.",
+      "Banks cannot charge prepayment penalty on floating rate home loans.",
+      "Right to credit information report (CIBIL) once a year for free.",
+      "Banks must resolve complaints within 30 days.",
+      "Banking Ombudsman can be approached for free dispute resolution.",
+      "Banks cannot share your financial information without consent.",
+      "Right to nominate a person for your bank account.",
+      "Unauthorized ATM/card transactions must be reversed if reported promptly."
+    ],
+    laws:[
+      { name:"RBI Banking Ombudsman Scheme 2006", articles:["RBI BOS 2006"], what:"Free complaint mechanism for banking disputes. Ombudsman can award up to ₹20 lakh compensation.", when:"When bank fails to resolve complaint within 30 days or gives unsatisfactory response.", whom:"All bank customers in India." }
+    ],
+    say:[
+      { label:"Filing banking complaint", text:"I am approaching the Banking Ombudsman under the RBI Banking Ombudsman Scheme 2006. The bank has failed to resolve my complaint within 30 days regarding [issue]." }
+    ],
+    evidence:["📋 Keep all bank statements","📧 Save all communication with bank","📝 Keep written complaint acknowledgment","📞 Note banker name and employee ID","📋 File complaint at bankingombudsman.rbi.org.in"],
+    contacts:[{num:"14448",name:"RBI Helpline",desc:"Banking complaints"},{num:"1800-22-1911",name:"Banking Ombudsman",desc:"Dispute resolution"},{num:"1930",name:"Cyber Fraud",desc:"Online banking fraud"}]
+  },
+  {
+    id:20, name:"Tax Rights", emoji:"💰", desc:"Income tax, GST, notices",
+    tag:"IT Act 1961", cat:"civil", bg:"#FEFAE8",
+    rights:[
+      "Right to receive proper notice before any tax demand or assessment.",
+      "Right to appeal against any tax order within 30 days.",
+      "You cannot be forced to self-incriminate in tax proceedings.",
+      "Right to representation by an authorized agent or CA.",
+      "Tax officials must identify themselves and show proper authority.",
+      "Right to stay of demand while appeal is pending.",
+      "Whistle-blower protection for reporting tax evasion.",
+      "Right to refund of excess tax paid with interest."
+    ],
+    laws:[
+      { name:"Income Tax Act 1961", articles:["IT Act 1961"], what:"Governs income tax in India. Provides for assessment, appeals, and taxpayer rights throughout the process.", when:"For income tax notices, assessments, demands, and refunds.", whom:"All taxpayers in India." }
+    ],
+    say:[
+      { label:"Responding to notice", text:"I have received a notice under Section [X] of the Income Tax Act. I request a 30-day extension to respond and wish to be represented by my Chartered Accountant." }
+    ],
+    evidence:["📋 Keep all ITR filings and receipts","📧 Save all tax notices (never ignore)","💰 Keep Form 16, 26AS records","📞 Note AO name and designation","📋 File appeal before CIT(A) within 30 days"],
+    contacts:[{num:"1800-103-0025",name:"Income Tax Helpline",desc:"Tax queries and complaints"},{num:"0124-4604099",name:"GST Helpline",desc:"GST disputes"},{num:"15100",name:"NALSA",desc:"Free legal aid"}]
+  },
+  {
+    id:21, name:"Child Rights", emoji:"👶", desc:"Protection, education, labour",
+    tag:"POCSO·RTE", cat:"social", bg:"#FFF0F5",
+    rights:[
+      "No child under 14 can be employed in hazardous work (Child Labour Act).",
+      "Every child has right to free education up to 14 years (RTE Act).",
+      "Children cannot be kept in custody — must be sent to juvenile justice board.",
+      "POCSO Act protects children from all forms of sexual abuse.",
+      "Corporal punishment in schools is illegal.",
+      "Child marriage is illegal — minimum 18 for girls, 21 for boys.",
+      "Right to identity — every child must be registered at birth.",
+      "Right to nutrition, health care, and protection from exploitation."
+    ],
+    laws:[
+      { name:"POCSO Act 2012", articles:["POCSO 2012"], what:"Protection of Children from Sexual Offences. Strict punishments for child sexual abuse, exploitation, and pornography.", when:"Any sexual offence against a child — mandatory reporting duty for all citizens.", whom:"All children below 18 years." },
+      { name:"Juvenile Justice Act 2015", articles:["JJ Act 2015"], what:"Governs children in conflict with law and children in need of care. Focus on rehabilitation, not punishment.", when:"When a child is in legal trouble or needs protection and care.", whom:"All persons below 18 years." }
+    ],
+    say:[
+      { label:"Reporting child abuse", text:"Under POCSO Act 2012 Section 19, I am mandatorily reporting a case of child sexual abuse. Failure to report is also an offence. I request immediate FIR registration." }
+    ],
+    evidence:["📞 Call 1098 (Childline) immediately","📸 Document evidence carefully (report to police)","📋 Report to Child Welfare Committee","✍️ FIR is mandatory for POCSO cases","🏥 Medical examination through SJPU"],
+    contacts:[{num:"1098",name:"Childline India",desc:"24/7 child helpline"},{num:"100",name:"Police",desc:"Emergency"},{num:"1800-11-0001",name:"NCPCR",desc:"Child rights commission"}]
+  },
+  {
+    id:22, name:"Prison & Undertrial Rights", emoji:"🔒", desc:"Bail, conditions, legal aid",
+    tag:"CrPC·Art 21", cat:"enforcement", bg:"#F0F0FF",
+    rights:[
+      "Every arrested person has the right to know charges — no indefinite detention.",
+      "Bail must be considered for all bailable offences immediately.",
+      "Right to legal aid — free lawyer provided if you cannot afford one.",
+      "Undertrial prisoners cannot be held longer than half the maximum sentence.",
+      "Right to humane conditions — food, water, medical care in prison.",
+      "Cannot be subjected to torture, cruel or degrading treatment.",
+      "Right to meet family and lawyer at reasonable intervals.",
+      "Right to challenge detention through Habeas Corpus petition."
+    ],
+    laws:[
+      { name:"Article 21 — Right to Life", articles:["Art. 21"], what:"Right to life includes right to live with dignity even in prison. Torture and inhuman treatment are prohibited.", when:"For any violation of prisoner rights or undertrial rights.", whom:"All prisoners and undertrials in India." },
+      { name:"Habeas Corpus — Article 32/226", articles:["Art. 32","Art. 226"], what:"Supreme Court and High Courts can order release of any illegally detained person through Habeas Corpus writ.", when:"If you believe you or someone is being illegally detained.", whom:"Any person detained illegally or without proper legal process." }
+    ],
+    say:[
+      { label:"Demanding legal aid", text:"Under Article 22(1) of the Constitution and Section 304 CrPC, I have the right to free legal aid. I request the court to appoint a legal aid lawyer for me immediately." }
+    ],
+    evidence:["📋 Note all dates and times of detention","✍️ Document any mistreatment in writing","📞 Contact NALSA for free legal aid","📋 File complaint with State Human Rights Commission","⚖️ File Habeas Corpus through NALSA lawyer"],
+    contacts:[{num:"15100",name:"NALSA Legal Aid",desc:"Free lawyer immediately"},{num:"1800-11-0001",name:"NHRC",desc:"Prisoner rights violations"},{num:"14441",name:"Prison Helpline",desc:"Condition complaints"}]
+  },
+  {
+    id:23, name:"Mental Health Rights", emoji:"🧠", desc:"Treatment, admission, dignity",
+    tag:"MHA 2017", cat:"social", bg:"#F5E8FF",
+    rights:[
+      "Every person has the right to access mental health care without discrimination.",
+      "Cannot be forcibly admitted to a mental health facility without due process.",
+      "Right to refuse treatment — except in case of imminent danger.",
+      "Right to confidentiality of mental health records.",
+      "No person can be called 'insane' or discriminated based on mental illness.",
+      "Right to free mental health services at government hospitals.",
+      "Advance directive — you can specify treatment preferences in advance.",
+      "Suicide is decriminalized — person in crisis needs help, not punishment."
+    ],
+    laws:[
+      { name:"Mental Healthcare Act 2017", articles:["MHA 2017"], what:"Provides right to mental healthcare, prohibits cruel treatment, and decriminalizes suicide attempt.", when:"For forcible admission, denial of treatment, discrimination based on mental health.", whom:"All persons with mental illness and their families." }
+    ],
+    say:[
+      { label:"Forced admission", text:"Under the Mental Healthcare Act 2017, I cannot be forcibly admitted without following proper legal procedures. I request review by the Mental Health Review Board." }
+    ],
+    evidence:["📋 Keep all mental health records","📄 Create advance directive for future crises","📞 Call iCall: 9152987821 for mental health support","✍️ Complaint to Mental Health Review Board","📧 Contact NIMHANS for expert guidance"],
+    contacts:[{num:"iCall: 9152987821",name:"iCall",desc:"Mental health helpline"},{num:"NIMHANS: 080-46110007",name:"NIMHANS",desc:"Mental health institute"},{num:"Vandrevala: 1860-2662-345",name:"Vandrevala Foundation",desc:"24/7 crisis support"}]
+  },
+  {
+    id:24, name:"Voter Rights", emoji:"🗳️", desc:"Registration, voting, booth", 
+    tag:"RPA 1951", cat:"civil", bg:"#E8F5F0",
+    rights:[
+      "Every citizen above 18 has the right to vote — it is a fundamental right.",
+      "Cannot be prevented from voting on basis of caste, religion, or gender.",
+      "Right to secret ballot — no one can ask how you voted.",
+      "Right to register as voter at current address even if not birthplace.",
+      "Right to be informed about your Booth Level Officer (BLO).",
+      "Right to vote by postal ballot if working in government or armed forces.",
+      "Right to challenge incorrect voter list entries.",
+      "Booth capture and voter intimidation are criminal offences."
+    ],
+    laws:[
+      { name:"Representation of People Act 1951", articles:["RPA 1951"], what:"Governs elections, voter registration, candidate qualifications, and electoral offences.", when:"For voter registration issues, booth intimidation, electoral malpractice.", whom:"All eligible voters in India." }
+    ],
+    say:[
+      { label:"Voter list issue", text:"My name has been illegally removed from the electoral roll. I am filing a complaint with the Electoral Registration Officer and requesting immediate reinstatement under RPA 1951." }
+    ],
+    evidence:["📋 Keep voter ID card safe","📸 Photograph any intimidation at booth","📞 Call 1950 (Election Commission helpline)","📱 Use Voter Helpline app for voter services","✍️ File complaint at voterportal.eci.gov.in"],
+    contacts:[{num:"1950",name:"Election Commission",desc:"Voter helpline"},{num:"voterportal.eci.gov.in",name:"ECI Portal",desc:"Online voter services"},{num:"100",name:"Police",desc:"Booth intimidation"}]
+  },
+  {
+    id:25, name:"Privacy Rights", emoji:"🔐", desc:"Data, surveillance, personal info",
+    tag:"IT Act·Art 21", cat:"digital", bg:"#EEE8FF",
+    rights:[
+      "Right to Privacy is a Fundamental Right (Puttaswamy judgment 2017).",
+      "Your phone cannot be tapped without a Home Secretary order.",
+      "Companies must get your consent before collecting personal data.",
+      "Right to access, correct, and delete your personal data.",
+      "Right to know what data a company holds about you.",
+      "Aadhaar data cannot be shared without your consent.",
+      "CCTV footage of you can only be used for specific purposes.",
+      "You can challenge illegal surveillance before courts."
+    ],
+    laws:[
+      { name:"Puttaswamy Judgment 2017", articles:["SC 2017 — Art 21"], what:"Supreme Court unanimously held that Privacy is a Fundamental Right under Article 21 of the Constitution.", when:"For any violation of personal privacy — digital, physical, or informational.", whom:"All persons in India." },
+      { name:"Digital Personal Data Protection Act 2023", articles:["DPDP 2023"], what:"Governs how companies collect, process, and store your personal data. You have rights to access, correct, and erase data.", when:"When companies misuse your data, send spam, or fail to secure your information.", whom:"All digital users in India." }
+    ],
+    say:[
+      { label:"Data privacy request", text:"Under the Digital Personal Data Protection Act 2023, I formally request access to all personal data you hold about me, and request deletion of data that is no longer necessary." }
+    ],
+    evidence:["📋 Screenshot privacy policy violations","📧 Send formal data access requests","📸 Document unauthorized use of your image/data","✍️ File complaint with Data Protection Board (when notified)","📞 File complaint with cybercrime.gov.in for data misuse"],
+    contacts:[{num:"1930",name:"Cyber Crime",desc:"Data theft and privacy violations"},{num:"cybercrime.gov.in",name:"Cybercrime Portal",desc:"File online complaint"},{num:"1800-11-0001",name:"NHRC",desc:"Surveillance complaints"}]
+  }
+];
+
+const DYK_FACTS = [
+  { fact: "You can record police officers on duty in public — it is completely legal in India.", tag: "Police Rights" },
+  { fact: "An FIR can be filed at ANY police station, not just where the crime happened. This is called 'Zero FIR'.", tag: "FIR Rights" },
+  { fact: "Silence cannot be used against you in court. You have the absolute right to remain silent.", tag: "Arrest Rights" },
+  { fact: "Hospitals MUST provide emergency treatment. You cannot be turned away even without money.", tag: "Medical Rights" },
+  { fact: "No service charge at restaurants is mandatory. You can legally refuse to pay it.", tag: "Consumer Rights" },
+  { fact: "Women cannot be arrested between sunset and sunrise — only with a magistrate's written order.", tag: "Women's Rights" }
+];
+
+const QUIZ_QUESTIONS = [
+  { q: "How long can police legally detain you without a magistrate's order?", opts: ["12 hours","24 hours","48 hours","72 hours"], ans: 1, explain: "Article 22 mandates production before magistrate within 24 hours." },
+  { q: "Under which Act can you request any information from a government body?", opts: ["IPC","RTI Act 2005","CrPC","Constitution Art 19"], ans: 1, explain: "The Right to Information Act 2005 gives every citizen this right." },
+  { q: "Are you legally required to unlock your phone for police?", opts: ["Yes always","No, never","Only if arrested","Only with warrant"], ans: 1, explain: "Your phone is protected under Article 21 — right to privacy." },
+  { q: "What is the emergency number for cybercrime in India?", opts: ["100","112","1930","1091"], ans: 2, explain: "1930 is the National Cyber Crime Helpline. Report within 1 hour!" },
+  { q: "What does Zero FIR mean?", opts: ["FIR with zero cost","FIR at any police station","FIR without evidence","FIR filed online"], ans: 1, explain: "Zero FIR can be filed at any station regardless of jurisdiction." },
+  { q: "How many weeks of maternity leave are mandatory in India?", opts: ["12 weeks","18 weeks","26 weeks","30 weeks"], ans: 2, explain: "Maternity Benefits Act 2017 mandates 26 weeks for first two children." },
+  { q: "Under RTI Act, how long does a PIO have to respond?", opts: ["7 days","15 days","30 days","60 days"], ans: 2, explain: "PIO must respond within 30 days (48 hours for life/liberty)." },
+  { q: "Which court handles environmental disputes in India?", opts: ["Supreme Court","NGT (National Green Tribunal)","High Court","Consumer Forum"], ans: 1, explain: "NGT was established specifically for fast environmental dispute resolution." }
+];
+
+const SIM_STEPS = [
+  { step:"Step 1", title:"Police Stops Your Vehicle", desc:"A police officer signals you to stop at night. Your car is pulled over. Stay calm.", do:"Pull over safely. Turn on cabin lights. Keep hands visible on steering wheel.", dont:"Don't reach suddenly into glove box. Don't be aggressive or argue immediately." },
+  { step:"Step 2", title:"Officer Asks for Documents", desc:"The officer asks for your driving licence, RC, insurance, and PUC certificate.", do:"Politely say 'Of course' and retrieve documents slowly. Know your rights first.", dont:"Don't hand over original RC if you have a digital copy. Don't hand phone to officer." },
+  { step:"Step 3", title:"Officer Asks to Search Vehicle", desc:"The officer says they want to search your vehicle 'for routine check'.", do:"Ask politely: 'Under what section of CrPC do you have authority to search?' Note the response.", dont:"Don't consent to a search without legal basis. Don't allow search of your phone." },
+  { step:"Step 4", title:"Officer Wants to Detain You", desc:"The officer says you must come to the station 'for questioning'.", do:"Ask: 'Am I under arrest? If yes, what are the grounds?' Call a lawyer or family member.", dont:"Don't go willingly without knowing why. Don't sign any paper at the station without lawyer." },
+  { step:"Step 5", title:"Resolving the Situation", desc:"Most stops are routine. Stay calm, be respectful but firm about your rights.", do:"Note officer's name, badge number, and vehicle number. Report misconduct to Control Room.", dont:"Don't escalate unnecessarily. Don't film in a way that provokes. Don't resist physically." }
+];
+
+// ============ STATE ============
+let currentPage = 'home';
+let prevPage = 'home';
+let currentScenario = null;
+let currentTab = 0;
+let currentCat = 'all';
+let currentLang = 'en';
+let quizIdx = 0, quizScore = 0, quizAnswered = false;
+let simIdx = 0;
+let viewedCount = 0, copiedCount = 0, quizBestScore = 0;
+let emergencyContacts = [];
+
+// Profile
+let profile = {
+  name: "Prashanth", age: 22, city: "Chennai", state: "Tamil Nadu",
+  phone: "", occupation: "Student", lang: "en"
+};
+
+// ============ NAVIGATION ============
+function showPage(id, sidebarEl) {
+  if (id === currentPage) return;
+  prevPage = currentPage;
+  currentPage = id;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+  // Bottom nav
+  document.querySelectorAll('.bnav-item').forEach(b => b.classList.remove('active'));
+  const bnav = document.getElementById('bnav-' + id);
+  if (bnav) bnav.classList.add('active');
+  // Sidebar nav
+  document.querySelectorAll('.snav-item').forEach(b => b.classList.remove('active'));
+  if (sidebarEl) sidebarEl.classList.add('active');
+  else {
+    document.querySelectorAll(`[data-nav="${id}"]`).forEach(b => b.classList.add('active'));
+  }
+  // Special inits
+  if (id === 'learn-page') initLearnPage();
+  if (id === 'sim-page') renderSim();
+  if (id === 'search-page') setTimeout(()=>document.getElementById('search-input').focus(),100);
+}
+
+function goBack() { showPage(prevPage === 'detail-page' ? 'home' : prevPage); }
+
+// ============ HOME RENDER ============
+function renderHome() {
+  const filtered = currentCat === 'all' ? SCENARIOS : SCENARIOS.filter(s => s.cat === currentCat);
+  document.getElementById('scenario-count').textContent = filtered.length + ' total';
+  const fa = document.getElementById('featured-area');
+  const sg = document.getElementById('scenarios-grid');
+  if (!filtered.length) { fa.innerHTML=''; sg.innerHTML='<div style="grid-column:span 2;text-align:center;padding:40px 0;color:var(--muted)">No scenarios in this category</div>'; return; }
+  const first = filtered[0];
+  fa.innerHTML = `<div class="featured-card" onclick="openScenario(${first.id})">
+    <div class="featured-emoji-wrap" style="background:${first.bg}">${first.emoji}</div>
+    <div class="featured-info">
+      <div class="featured-name">${first.name}</div>
+      <div class="featured-desc">${first.desc}</div>
+      <div class="featured-tag">${first.tag}</div>
+    </div>
+    <div class="featured-arrow">→</div>
+  </div>`;
+  sg.innerHTML = filtered.slice(1).map(s=>`
+    <div class="grid-card" onclick="openScenario(${s.id})">
+      <div class="grid-emoji" style="background:${s.bg}">${s.emoji}</div>
+      <div class="grid-name">${s.name}</div>
+      <div class="grid-desc">${s.desc}</div>
+      <div class="grid-tag">${s.tag}</div>
+    </div>`).join('');
+}
+
+function filterCat(cat, el) {
+  currentCat = cat;
+  document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderHome();
+}
+
+// ============ DETAIL ============
+function openScenario(id) {
+  currentScenario = SCENARIOS.find(s => s.id === id);
+  if (!currentScenario) return;
+  currentTab = 0;
+  viewedCount++;
+  document.getElementById('stat-viewed').textContent = viewedCount;
+  document.getElementById('detail-nav-title').textContent = currentScenario.name;
+  document.getElementById('detail-hero').innerHTML = `
+    <div class="detail-emoji-wrap" style="background:${currentScenario.bg}">${currentScenario.emoji}</div>
+    <div>
+      <div class="detail-scenario-name">${currentScenario.name}</div>
+      <div class="detail-tag">${currentScenario.tag}</div>
+    </div>`;
+  const tabs = ['Your Rights','Legal Basis','Say This','Evidence','Contacts'];
+  document.getElementById('detail-tabs').innerHTML = tabs.map((t,i)=>`
+    <button class="dtab ${i===0?'active':''}" onclick="switchTab(${i},this)">${t}</button>`).join('');
+  renderTab(0);
+  showPage('detail-page');
+}
+
+function switchTab(idx, el) {
+  currentTab = idx;
+  document.querySelectorAll('.dtab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderTab(idx);
+}
+
+function renderTab(idx) {
+  const s = currentScenario;
+  let h = '';
+  if (idx===0) {
+    h += `<div class="block-label">YOUR RIGHTS</div>`;
+    h += s.rights.map((r,i)=>`<div class="right-item"><div class="right-num">0${i+1}</div><div class="right-text">${r}</div></div>`).join('');
+  } else if (idx===1) {
+    h += `<div class="block-label">LEGAL PROVISIONS</div>`;
+    s.laws.forEach((law,li)=>{
+      const uid = `law-${li}`;
+      h += `<button class="law-toggle-btn" onclick="toggleLaw('${uid}')">📖 Tap to view — ${law.name}</button>`;
+      h += `<div class="law-detail-card" id="${uid}">
+        <div class="law-detail-name">${law.name}</div>
+        <div class="law-detail-meta">${law.articles.map(a=>`<span class="law-pill-tag">${a}</span>`).join('')}</div>
+        <div class="law-detail-desc"><strong>What it says:</strong> ${law.what}</div>
+        <div class="law-detail-use" style="margin-top:10px;"><div class="law-detail-use-title">When to use</div><div class="law-detail-use-text">${law.when}</div></div>
+        <div class="law-detail-use" style="margin-top:8px;"><div class="law-detail-use-title">Who it protects</div><div class="law-detail-use-text">${law.whom}</div></div>
+      </div>`;
+    });
+  } else if (idx===2) {
+    h += `<div class="block-label">EXACT WORDS TO SAY</div>`;
+    s.say.forEach((item,i)=>`${h += `<div class="say-card"><div class="say-label">${item.label}</div><div class="say-text">${item.text}</div><button class="copy-btn" onclick="copyText(this,'${item.text.replace(/'/g,"\\'")}')">📋 Copy</button></div>`}`);
+  } else if (idx===3) {
+    h += `<div class="block-label">WHAT TO COLLECT AS EVIDENCE</div>`;
+    s.evidence.forEach(e=>{ h+=`<div class="evidence-item"><span class="ev-icon">${e.slice(0,2)}</span><span class="ev-text">${e.slice(2)}</span></div>`; });
+  } else if (idx===4) {
+    h += `<div class="block-label">EMERGENCY CONTACTS</div>`;
+    s.contacts.forEach(c=>{ h+=`<div class="contact-card"><div class="contact-num">${c.num}</div><div class="contact-info"><div class="cname">${c.name}</div><div class="cdesc">${c.desc}</div></div><button class="call-btn" onclick="callNum('${c.num}')">📞</button></div>`; });
+  }
+  document.getElementById('detail-tab-content').innerHTML = h;
+}
+
+function toggleLaw(uid) {
+  const el = document.getElementById(uid);
+  const btn = el.previousElementSibling;
+  if (el.style.display === 'block') {
+    el.style.display = 'none';
+    btn.textContent = '📖 Tap to view — ' + btn.textContent.split('— ')[1];
+  } else {
+    el.style.display = 'block';
+    btn.textContent = '📖 Hide — ' + btn.textContent.split('— ')[1];
+  }
+}
+
+// ============ SEARCH ============
+function doSearch(q) {
+  const r = document.getElementById('search-results');
+  if (!q.trim()) { r.innerHTML='<div class="search-empty">Type to search across all rights, laws & scenarios</div>'; return; }
+  const term = q.toLowerCase();
+  let results = [];
+  SCENARIOS.forEach(s=>{
+    if (s.name.toLowerCase().includes(term)||s.desc.toLowerCase().includes(term)) {
+      results.push({type:'Scenario',text:s.name+' — '+s.desc,id:s.id});
+    }
+    s.rights.forEach(rr=>{
+      if(rr.toLowerCase().includes(term)) results.push({type:s.name,text:rr,id:s.id});
+    });
+    s.laws.forEach(l=>{
+      if(l.name.toLowerCase().includes(term)||l.what.toLowerCase().includes(term)) results.push({type:s.name,text:l.name+': '+l.what,id:s.id});
+    });
+  });
+  if (!results.length) { r.innerHTML='<div class="search-empty">No results found for "'+q+'"</div>'; return; }
+  r.innerHTML = results.slice(0,20).map(res=>`
+    <div class="search-result-item" onclick="openScenario(${res.id})">
+      <div class="sr-cat">${res.type}</div>
+      <div class="sr-text">${highlight(res.text,q)}</div>
+    </div>`).join('');
+}
+
+function highlight(text, q) {
+  return text.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<mark>$1</mark>');
+}
+
+// ============ PANIC ============
+function openPanic() { document.getElementById('panic-overlay').classList.add('active'); }
+function closePanic() { document.getElementById('panic-overlay').classList.remove('active'); }
+function callNum(n) { window.location.href = 'tel:'+n; }
+
+// ============ COPY ============
+function copyText(btn, text) {
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent = '✓ Copied!';
+    setTimeout(()=>btn.textContent='📋 Copy', 2000);
+    showToast();
+    copiedCount++;
+    document.getElementById('stat-copied').textContent = copiedCount;
+  });
+}
+function showToast() {
+  const t = document.getElementById('copied-toast');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
+}
+
+// ============ AI CHAT ============
+const AI_RESPONSES = {
+  en: {
+    "police search phone": "🔒 Police CANNOT force you to unlock your phone. Your phone is protected under Article 21 (Right to Privacy — Puttaswamy 2017). Calmly say: 'I do not consent to unlocking my phone.' If they insist, call a lawyer immediately at 15100 (free).",
+    "stopped at night": "🌙 If stopped by police at night:\n1. Stay calm and turn on cabin lights\n2. Ask: 'Am I under arrest? If yes, what are the grounds?'\n3. You don't have to answer questions — you can remain silent\n4. Note the officer's badge number\n5. Call family or lawyer immediately",
+    "fir not registered": "📋 If police refuse to register your FIR:\n1. Ask them to record the refusal in writing\n2. Send a written complaint to SP/SSP by Speed Post\n3. File an online FIR at your state police website\n4. Approach Magistrate directly under Section 156(3) CrPC\n5. Escalate to Human Rights Commission (1800-180-1522)",
+    "workplace harassment": "💼 For workplace harassment:\n1. Document everything — save messages, emails, dates\n2. File complaint with Internal Complaints Committee (ICC)\n3. ICC must complete inquiry within 90 days\n4. If ICC fails, approach Labour Commissioner\n5. File FIR under IPC 354A for sexual harassment\nHelpline: 1091 (Women's Helpline)",
+    "hospital rights": "🏥 Your hospital rights:\n1. Emergency treatment CANNOT be denied — ever\n2. Get itemized bill — hospitals must provide it\n3. No surgery without your written informed consent\n4. You can request your medical records anytime\n5. File complaint with NHRC (1800-11-0001) if rights are denied",
+    "default": "⚖️ I can help you with legal questions about police interactions, arrests, workplace rights, consumer rights, medical rights, and more. Could you describe your specific situation? I'll tell you exactly what your rights are and what to do."
+  },
+  ta: {
+    "police search phone": "🔒 போலீசார் உங்கள் போனை திறக்க கட்டாயப்படுத்த முடியாது. Article 21 கீழ் உங்கள் privacy பாதுகாக்கப்பட்டுள்ளது. 'நான் என் போனை திறக்க சம்மதிக்கவில்லை' என்று சொல்லுங்கள். 15100 இல் இலவச வழக்கறிஞரை அழையுங்கள்.",
+    "default": "⚖️ நான் உங்கள் சட்ட உரிமைகள் பற்றி உதவ தயாராக இருக்கிறேன். போலீஸ், மருத்துவமனை, பணியிட உரிமைகள் - எதுவும் கேளுங்கள்!"
+  },
+  hi: {
+    "police search phone": "🔒 पुलिस आपको फोन अनलॉक करने के लिए मजबूर नहीं कर सकती। आपका फोन Article 21 के तहत सुरक्षित है। शांति से कहें: 'मैं अपना फोन अनलॉक करने की सहमति नहीं देता।' 15100 पर मुफ्त वकील को कॉल करें।",
+    "default": "⚖️ मैं आपकी कानूनी समस्याओं में मदद करने के लिए तैयार हूं। पुलिस, अस्पताल, कार्यस्थल - किसी भी विषय पर पूछें!"
+  }
+};
+
+function findAIResponse(q) {
+  const lower = q.toLowerCase();
+  const lang = currentLang;
+  const responses = AI_RESPONSES[lang] || AI_RESPONSES.en;
+  for (const key of Object.keys(responses)) {
+    if (key !== 'default' && lower.includes(key.split(' ')[0]) && lower.split(' ').some(w=>key.includes(w))) return responses[key];
+    if (key !== 'default' && key.split(' ').every(k=>lower.includes(k))) return responses[key];
+  }
+  // Try English as fallback
+  const enR = AI_RESPONSES.en;
+  for (const key of Object.keys(enR)) {
+    if (key !== 'default' && key.split(' ').every(k=>lower.includes(k))) return enR[key];
+  }
+  // Match scenario
+  const scenario = SCENARIOS.find(s=>s.name.toLowerCase().split(' ').some(w=>lower.includes(w)));
+  if (scenario) {
+    return `📋 For ${scenario.name}:\n\n${scenario.rights.slice(0,4).map((r,i)=>`${i+1}. ${r}`).join('\n')}\n\nKey law: ${scenario.laws[0].name} — ${scenario.laws[0].what.slice(0,100)}...\n\nTap the "${scenario.name}" card on the home page for full details!`;
+  }
+  return responses.default || AI_RESPONSES.en.default;
+}
+
+function addAIMsg(text, role) {
+  const c = document.getElementById('ai-messages');
+  const div = document.createElement('div');
+  div.className = `ai-msg ${role}`;
+  div.innerHTML = `<div class="ai-bubble">${text.replace(/\n/g,'<br>')}</div>`;
+  c.appendChild(div);
+  c.scrollTop = c.scrollHeight;
+}
+
+function sendAI() {
+  const input = document.getElementById('ai-input');
+  const q = input.value.trim();
+  if (!q) return;
+  addAIMsg(q, 'user');
+  input.value = '';
+  // typing indicator
+  const c = document.getElementById('ai-messages');
+  const typing = document.createElement('div');
+  typing.className = 'ai-msg bot';
+  typing.innerHTML = '<div class="ai-bubble ai-typing"><span></span><span></span><span></span></div>';
+  c.appendChild(typing);
+  c.scrollTop = c.scrollHeight;
+  setTimeout(()=>{
+    c.removeChild(typing);
+    addAIMsg(findAIResponse(q), 'bot');
+  }, 800 + Math.random()*600);
+}
+
+function askAI(text) {
+  document.getElementById('ai-input').value = text;
+  sendAI();
+}
+
+function setLang(lang, el) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ============ FIR GENERATOR ============
+function generateFIR() {
+  const name = document.getElementById('fir-name').value || '[Your Name]';
+  const addr = document.getElementById('fir-addr').value || '[Your Address]';
+  const phone = document.getElementById('fir-phone').value || '[Your Phone]';
+  const type = document.getElementById('fir-type').value;
+  const date = document.getElementById('fir-date').value || '[Date & Time]';
+  const place = document.getElementById('fir-place').value || '[Place of Incident]';
+  const desc = document.getElementById('fir-desc').value || '[Description of incident]';
+  const accused = document.getElementById('fir-accused').value || 'Unknown';
+  const typeMap = {theft:'Theft/Robbery',assault:'Assault/Battery',harassment:'Harassment',cybercrime:'Cybercrime/Online Fraud',domestic:'Domestic Violence',workplace:'Workplace Misconduct',police:'Police Misconduct',other:'Criminal Offence'};
+  const firText = `TO,
+The Station House Officer,
+[Police Station Name],
+[City, State]
+
+SUBJECT: First Information Report — ${typeMap[type]}
+
+Sir/Madam,
+
+I, ${name}, resident of ${addr}, Phone: ${phone}, hereby submit this complaint for your kind consideration and request registration of FIR:
+
+1. NATURE OF COMPLAINT: ${typeMap[type]}
+
+2. DATE & TIME OF INCIDENT: ${date}
+
+3. PLACE OF INCIDENT: ${place}
+
+4. ACCUSED: ${accused}
+
+5. FACTS OF THE CASE:
+${desc}
+
+6. WITNESSES: (if any — to be added)
+
+7. EVIDENCE: (documents, screenshots, or other evidence available)
+
+I request you to register an FIR under appropriate sections of IPC/BNS and take immediate action against the accused. I also request a copy of the FIR as I am entitled to receive one under Section 154(2) CrPC.
+
+I declare that the above information is true to the best of my knowledge.
+
+Yours sincerely,
+${name}
+${phone}
+Date: ${new Date().toLocaleDateString('en-IN')}
+
+[Signature]`;
+  document.getElementById('fir-output-text').textContent = firText;
+  document.getElementById('fir-output').classList.add('show');
+  document.getElementById('fir-output').scrollIntoView({behavior:'smooth'});
+}
+
+function copyFIR() {
+  const text = document.getElementById('fir-output-text').textContent;
+  navigator.clipboard.writeText(text).then(()=>{ showToast(); copiedCount++; document.getElementById('stat-copied').textContent=copiedCount; });
+}
+
+// ============ QUIZ ============
+function initLearnPage() {
+  // DYK
+  const dyk = DYK_FACTS[Math.floor(Math.random()*DYK_FACTS.length)];
+  document.getElementById('dyk-section').innerHTML = `
+    <div class="dyk-card">
+      <div class="dyk-label">💡 Did You Know?</div>
+      <div class="dyk-text">${dyk.fact}</div>
+      <div class="dyk-tag">${dyk.tag}</div>
+    </div>`;
+  startQuiz();
+}
+
+function startQuiz() {
+  quizIdx = 0; quizScore = 0; quizAnswered = false;
+  document.getElementById('quiz-final').classList.remove('show');
+  document.getElementById('quiz-next').classList.remove('show');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  if (quizIdx >= QUIZ_QUESTIONS.length) { showQuizResult(); return; }
+  const q = QUIZ_QUESTIONS[quizIdx];
+  document.getElementById('quiz-score-inline').textContent = `${quizIdx+1}/${QUIZ_QUESTIONS.length}`;
+  document.getElementById('quiz-container').innerHTML = `
+    <div class="quiz-card">
+      <div class="quiz-q-num">Question ${quizIdx+1} of ${QUIZ_QUESTIONS.length}</div>
+      <div class="quiz-q">${q.q}</div>
+      <div class="quiz-options">
+        ${q.opts.map((o,i)=>`<div class="quiz-opt" onclick="answerQ(${i})">${o}</div>`).join('')}
+      </div>
+      <div id="quiz-explain" style="display:none;margin-top:12px;padding:12px;background:var(--bg);border-radius:12px;font-size:13px;color:var(--dark);">${q.explain}</div>
+    </div>`;
+  quizAnswered = false;
+  document.getElementById('quiz-next').classList.remove('show');
+}
+
+function answerQ(idx) {
+  if (quizAnswered) return;
+  quizAnswered = true;
+  const q = QUIZ_QUESTIONS[quizIdx];
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach((o,i)=>{
+    if (i===q.ans) o.classList.add('correct');
+    else if (i===idx && i!==q.ans) o.classList.add('wrong');
+    o.style.pointerEvents='none';
+  });
+  if (idx===q.ans) quizScore++;
+  document.getElementById('quiz-explain').style.display='block';
+  document.getElementById('quiz-next').classList.add('show');
+}
+
+function nextQuestion() { quizIdx++; renderQuestion(); }
+
+function showQuizResult() {
+  document.getElementById('quiz-container').innerHTML='';
+  document.getElementById('quiz-next').classList.remove('show');
+  document.getElementById('quiz-score-num').textContent = `${quizScore}/${QUIZ_QUESTIONS.length}`;
+  document.getElementById('quiz-final').classList.add('show');
+  if (quizScore > quizBestScore) { quizBestScore = quizScore; document.getElementById('stat-quiz').textContent = quizBestScore+'/'+QUIZ_QUESTIONS.length; }
+}
+
+// ============ SCENARIO SIM ============
+function renderSim() {
+  const s = SIM_STEPS[simIdx];
+  document.getElementById('sim-container').innerHTML = `
+    <div class="sim-card">
+      <div class="sim-step-badge">${s.step} of ${SIM_STEPS.length}</div>
+      <div class="sim-title">${s.title}</div>
+      <div class="sim-desc">${s.desc}</div>
+      <div class="sim-do"><div class="sim-do-label">✅ DO THIS</div><div class="sim-text">${s.do}</div></div>
+      <div class="sim-dont"><div class="sim-dont-label">❌ DON'T DO THIS</div><div class="sim-text">${s.dont}</div></div>
+    </div>`;
+  document.getElementById('sim-prev').disabled = simIdx === 0;
+  document.getElementById('sim-prev').style.opacity = simIdx === 0 ? '0.4' : '1';
+  document.getElementById('sim-next').textContent = simIdx === SIM_STEPS.length-1 ? '↩ Restart' : 'Next →';
+}
+
+function simStep(dir) {
+  if (dir===1 && simIdx===SIM_STEPS.length-1) { simIdx=0; }
+  else { simIdx = Math.max(0,Math.min(SIM_STEPS.length-1, simIdx+dir)); }
+  renderSim();
+}
+
+// ============ PROFILE ============
+function updateProfilePreview() {
+  const name = document.getElementById('p-name').value || 'User';
+  const city = document.getElementById('p-city').value || '';
+  const state = document.getElementById('p-state').value || '';
+  document.getElementById('profile-name-display').textContent = name;
+  document.getElementById('profile-city-display').textContent = city + (state?', '+state:'');
+  document.getElementById('profile-avatar-big').textContent = name[0].toUpperCase();
+  document.getElementById('main-avatar').textContent = name[0].toUpperCase();
+  document.getElementById('sb-avatar').textContent = name[0].toUpperCase();
+  document.getElementById('sb-name').textContent = name.split(' ')[0];
+  document.getElementById('greeting-text').textContent = 'Hello, '+name.split(' ')[0]+' 👋';
+}
+
+function saveProfile() {
+  profile.name = document.getElementById('p-name').value;
+  profile.age = document.getElementById('p-age').value;
+  profile.city = document.getElementById('p-city').value;
+  profile.state = document.getElementById('p-state').value;
+  profile.phone = document.getElementById('p-phone').value;
+  profile.occupation = document.getElementById('p-occ').value;
+  profile.lang = document.getElementById('p-lang').value;
+  updateProfilePreview();
+  showToast();
+}
+
+// Emergency Contacts
+function renderContacts() {
+  const list = document.getElementById('ec-list');
+  list.innerHTML = emergencyContacts.length ? emergencyContacts.map((c,i)=>`
+    <div class="emergency-contact-card">
+      <div class="ec-avatar">${c.name[0]}</div>
+      <div class="ec-info">
+        <div class="ec-name">${c.name}</div>
+        <div class="ec-rel">${c.rel}</div>
+        <div class="ec-num">${c.num}</div>
+      </div>
+      <button class="call-btn" style="background:var(--dark)" onclick="callNum('${c.num}')">📞</button>
+    </div>`).join('') : '<div style="color:var(--muted);font-size:14px;padding:8px 0;">No emergency contacts added yet.</div>';
+}
+
+function openAddContact() {
+  document.getElementById('contact-modal').classList.add('active');
+}
+function closeModal() {
+  document.getElementById('contact-modal').classList.remove('active');
+}
+function addContact() {
+  const name = document.getElementById('ec-name-input').value.trim();
+  const rel = document.getElementById('ec-rel-input').value.trim();
+  const num = document.getElementById('ec-num-input').value.trim();
+  if (!name || !num) return;
+  emergencyContacts.push({name,rel,num});
+  renderContacts();
+  closeModal();
+  document.getElementById('ec-name-input').value='';
+  document.getElementById('ec-rel-input').value='';
+  document.getElementById('ec-num-input').value='';
+}
+
+// ============ INIT ============
+renderHome();
+renderContacts();
+</script>
+</body>
+</html>
